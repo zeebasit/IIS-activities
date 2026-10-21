@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>IIS Module 2 | How HTTPS Uses TLS 1.3</title>
+<style>
+:root{--bg:#f3f7fc;--ink:#172033;--sub:#64748b;--line:#dce5f1;--blue:#1769e0;--dark:#0f4fae;--pale:#edf4ff;--green:#0d7958;--greenbg:#e6f7ef;--red:#b93448;--redbg:#fff0f2;--amber:#986100;--amberbg:#fff5de;--purple:#6752b7;--shadow:0 10px 30px rgba(24,45,80,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}button:disabled{cursor:not-allowed;opacity:.48}a{color:var(--blue)}
+.shell{max-width:1370px;margin:0 auto;padding:26px 22px 38px}
+.eyebrow{color:var(--blue);font-size:12px;letter-spacing:.12em;font-weight:800;text-transform:uppercase}
+.hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:17px}.hero h1{font-size:clamp(1.75rem,3.5vw,2.6rem);line-height:1.17;margin:7px 0}.hero p{max-width:785px;margin:0;color:var(--sub);font-size:1.02rem}.hero-tag{background:#e6f0ff;border:1px solid #cfe2ff;color:#1956a4;padding:10px 13px;border-radius:11px;white-space:nowrap;font-weight:700;font-size:13px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.picker{padding:16px 18px;margin-bottom:15px}.picker-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:11px}.picker h2,.details h2{font-size:1.05rem;margin:0}.small{color:var(--sub);font-size:13px}.scenario-row{display:flex;flex-wrap:wrap;gap:9px}.scenario{border:1px solid var(--line);border-radius:9px;background:#fff;padding:10px 14px;color:#42526b;font-weight:700}.scenario[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}.scenario:hover:not([aria-pressed="true"]){border-color:var(--blue)}
+.statusline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.pill{font-weight:750;font-size:13px;padding:6px 11px;border-radius:999px;background:var(--pale);color:var(--dark);border:1px solid #d5e6fc}.pill.good{background:var(--greenbg);color:var(--green);border-color:#bfe8d4}.pill.bad{background:var(--redbg);color:var(--red);border-color:#f5c6cf}
+.steps{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;margin-bottom:14px}
+.step{border:1px solid var(--line);border-radius:10px;background:#fff;min-height:72px;padding:8px 5px;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;color:#59697e;font-size:12px;font-weight:750;line-height:1.3;text-align:center}
+.step b{border:1px solid #dce5ef;width:23px;height:23px;display:grid;place-items:center;border-radius:50%;font-size:12px;background:#f8fafc}
+.step.active{border-color:var(--blue);background:var(--pale);color:var(--dark);box-shadow:inset 0 0 0 1px var(--blue)}.step.active b{background:var(--blue);color:#fff;border-color:var(--blue)}.step.done b{background:var(--greenbg);border-color:#bfe8d4;color:var(--green)}.step:disabled{background:#f5f6f9}
+.main-grid{display:grid;grid-template-columns:minmax(0,1.24fr) minmax(320px,.76fr);gap:16px;align-items:start}
+.visual{padding:19px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.section-heading h2{font-size:1.08rem;margin:0}.section-heading span{font-size:12px;color:var(--sub)}
+.address{padding:12px 14px;border-radius:10px;background:#f5f8fc;border:1px solid var(--line);display:flex;gap:8px;align-items:center;font:14px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace;flex-wrap:wrap;margin-bottom:18px}.address .protocol{color:var(--green);font-weight:800}.address .path{color:var(--sub)}.address .dot{height:8px;width:8px;border-radius:50%;background:#56a085}
+.diagram{display:grid;grid-template-columns:1fr minmax(160px,1.2fr) 1fr;gap:10px;align-items:center;min-height:205px}
+.endpoint{text-align:center;background:#f8faff;border:1px solid var(--line);border-radius:15px;padding:18px 8px;min-height:165px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px}.endpoint .avatar{width:55px;height:55px;border-radius:14px;background:#e3edff;display:grid;place-items:center;font-size:29px}.endpoint.server .avatar{background:#ece6ff}.endpoint strong{font-size:1.05rem}.endpoint span{font-size:12px;color:var(--sub)}
+.wire{min-width:0;position:relative;height:155px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}.track{width:100%;height:3px;background:#b5c7e4;position:relative}.track:before,.track:after{content:"";position:absolute;top:-4px;width:10px;height:10px;border-top:3px solid var(--blue);border-right:3px solid var(--blue);transform:rotate(45deg);right:1px}.track.reverse:after{left:1px;right:auto;transform:rotate(225deg)}.track.local{opacity:.22}.track.local:after,.track.local:before{display:none}.moving{position:absolute;left:12%;top:-13px;font-size:17px;background:white;border:1px solid #bcd0ec;border-radius:7px;padding:0 5px;animation:move-forward .65s ease-out both}.track.reverse .moving{animation:move-back .65s ease-out both}.track.local .moving{display:none}
+@keyframes move-forward{from{left:4%}to{left:67%}}@keyframes move-back{from{left:67%}to{left:4%}}
+.wire-label{font-size:13px;text-align:center;color:#455b79;font-weight:800}.wire-caption{font-size:11px;color:var(--sub);text-align:center}
+.packet{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#f8fbff}.packet .caption{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--sub);text-transform:uppercase}.code{display:block;font:13px/1.6 ui-monospace,Consolas,monospace;color:#234b83;margin-top:6px;overflow-wrap:anywhere;white-space:pre-wrap}
+.spy{display:flex;align-items:flex-start;gap:11px;margin-top:13px;background:#fff8ee;border:1px solid #ffdfad;border-radius:12px;padding:13px}.spy .eye{font-size:24px}.spy strong{display:block}.spy p{margin:3px 0 0;color:#70563d;font-size:13px}.security-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:13px}.security-card{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:87px}.security-card b{font-size:12px;color:#35445e}.security-card p{font-size:12px;color:var(--sub);margin:6px 0 0}
+.details{padding:20px}.step-number{font-size:12px;text-transform:uppercase;color:var(--blue);font-weight:800;letter-spacing:.08em}.details h2{font-size:1.45rem;line-height:1.25;margin:5px 0 12px}.details>p{color:#45546b;margin:0 0 12px}.callout{border-left:4px solid var(--blue);background:var(--pale);padding:12px 13px;border-radius:0 10px 10px 0;color:#24466d;margin:12px 0;font-size:14px}.callout.fail{border-color:var(--red);background:var(--redbg);color:#892c3d}
+.cert{border:1px solid var(--line);border-radius:12px;margin-top:13px;overflow:hidden}.cert-head{background:#f6f8fc;padding:10px 12px;font-weight:800;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}.cert table{border-collapse:collapse;width:100%;font-size:12px}.cert td{padding:8px 10px;border-top:1px solid #e9eef6;vertical-align:top;overflow-wrap:anywhere}.cert td:first-child{font-weight:700;color:var(--sub);width:35%}.fail-text{color:var(--red);font-weight:800}.ok-text{color:var(--green);font-weight:800}
+.quiz{border-top:1px solid var(--line);margin-top:17px;padding-top:15px}.quiz h3{margin:0 0 6px;font-size:1rem}.quiz p{font-size:14px;margin:0 0 10px;color:#46556d}.choices{display:grid;gap:7px}.choice{text-align:left;background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:#30435f}.choice:hover:not(:disabled){border-color:var(--blue);background:#f7faff}.choice.correct{background:var(--greenbg);border-color:#97dabb;color:#075e43}.choice.incorrect{background:var(--redbg);border-color:#eab8c1;color:#a32d42}
+.feedback{font-size:13px;margin-top:8px;min-height:20px;color:#607087}.feedback.positive{color:var(--green)}.feedback.negative{color:var(--red)}
+.navigation{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}.buttons{display:flex;gap:8px}.btn{padding:9px 14px;border-radius:9px;border:1px solid var(--line);background:#fff;color:#243b5a;font-weight:750}.btn:hover:not(:disabled){border-color:var(--blue)}.btn.primary{background:var(--blue);border-color:var(--blue);color:white}.btn.primary:hover{background:var(--dark)}
+.extra{margin-top:16px;padding:18px}.extra-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.extra h2{font-size:1.09rem;margin:0}.extra p{color:var(--sub);margin:5px 0 0;font-size:14px}.contrast{display:none;grid-template-columns:1fr 1fr;gap:11px;margin-top:15px}.contrast.show{display:grid}.compare-panel{padding:13px;border-radius:11px;border:1px solid var(--line);background:#f8fafc}.compare-panel h3{margin:0 0 7px;font-size:14px}.compare-panel p{margin:5px 0;color:#526078}.compare-panel code{display:block;padding:10px;margin-top:9px;background:white;border:1px solid var(--line);border-radius:8px;word-break:break-all;font-size:12px}.mini-note{margin:12px 0 0;font-size:12px;color:var(--sub)}footer{text-align:center;padding:22px 10px;color:#708198;font-size:13px}
+@media(max-width:1020px){.steps{grid-template-columns:repeat(4,minmax(0,1fr))}.main-grid{grid-template-columns:1fr}.visual{min-height:0}}
+@media(max-width:620px){.shell{padding:15px 12px 30px}.hero{display:block}.hero-tag{display:inline-block;margin-top:12px}.steps{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.step{min-height:70px;padding:5px 2px;font-size:11px}.diagram{grid-template-columns:1fr 1.2fr 1fr;gap:4px}.endpoint{min-height:135px;padding:8px 2px}.endpoint .avatar{width:42px;height:42px;font-size:22px}.endpoint strong{font-size:12px}.wire-label{font-size:11px}.security-cards{grid-template-columns:1fr}.security-card{min-height:0}.contrast{grid-template-columns:1fr}.navigation{align-items:stretch}.navigation>.small{order:-1;width:100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="hero">
+<div><div class="eyebrow">Information Security • Module 2 • Interactive demonstration</div><h1>Inside a Secure Website: HTTPS &amp; TLS</h1><p>Follow a browser connecting to a website. Watch the TLS 1.3 handshake, inspect the server's certificate, see what a network observer can read, and test what happens when something is wrong.</p></div>
+<div class="hero-tag">TLS 1.3 · Full handshake</div>
+</header>
+<section class="picker card" aria-label="Connection scenarios">
+<div class="picker-head"><h2>Choose a connection scenario</h2><span class="small">Change the scenario at any point to compare outcomes.</span></div>
+<div class="scenario-row" id="scenarios" role="group" aria-label="Select certificate scenario"></div>
+</section>
+<div class="statusline"><span id="connectionStatus" class="pill" role="status" aria-live="polite">Connecting...</span><span id="score" class="small">Knowledge checks: 0 / 4</span></div>
+<nav class="steps" id="steps" aria-label="TLS handshake steps"></nav>
+<div class="main-grid">
+<section class="card visual" aria-label="TLS exchange visualisation">
+<div class="section-heading"><h2>Live connection view</h2><span id="wireMode">Handshake</span></div>
+<div class="address"><span class="dot"></span><strong class="protocol">https://</strong><strong id="hostname">shop.example</strong><span class="path">/checkout</span></div>
+<div class="diagram">
+<div class="endpoint"><div class="avatar" aria-hidden="true">💻</div><strong>Browser</strong><span>Student's device</span><span id="browserState">Starting connection</span></div>
+<div class="wire"><div id="track" class="track"><span id="moving" class="moving" aria-hidden="true">📨</span></div><div id="wireLabel" class="wire-label">Request</div><div id="wireCaption" class="wire-caption">Browser → server</div></div>
+<div class="endpoint server"><div class="avatar" aria-hidden="true">🖥️</div><strong>Web server</strong><span>shop.example</span><span id="serverState">Waiting for handshake</span></div>
+</div>
+<div class="packet"><div class="caption" id="packetHeading">On the network</div><code id="packetBody" class="code"></code></div>
+<div class="spy"><div class="eye" aria-hidden="true">👁️</div><div><strong>What can a network observer see?</strong><p id="observerText"></p></div></div>
+<div class="security-cards" aria-label="Connection security properties">
+<div class="security-card"><b>Identity</b><p id="identityState"></p></div><div class="security-card"><b>Shared secrets</b><p id="keyState"></p></div><div class="security-card"><b>Website data</b><p id="dataState"></p></div>
+</div>
+</section>
+<section class="card details" aria-label="Step explanation and questions">
+<div class="step-number" id="stageCount">Step 1 of 8</div><h2 id="stepTitle">Open the website</h2><p id="stepExplanation"></p><div id="insight" class="callout"></div><div id="certViewer" class="cert" hidden></div>
+<div id="quizArea" class="quiz" hidden><h3>Check your understanding</h3><p id="quizQuestion"></p><div class="choices" id="quizChoices"></div><div id="quizFeedback" class="feedback" aria-live="polite"></div></div>
+</section>
+</div>
+<div class="navigation"><div class="buttons"><button class="btn" id="back" type="button">← Previous</button><button class="btn primary" id="next" type="button">Next step →</button></div><span id="navHint" class="small"></span><button class="btn" id="reset" type="button">↺ Restart</button></div>
+<section class="extra card">
+<div class="extra-head"><div><h2>What if the website used HTTP instead?</h2><p>Compare the network observer's view with and without TLS.</p></div><button type="button" id="compare" class="btn" aria-expanded="false">Show HTTP comparison</button></div>
+<div id="contrast" class="contrast">
+<div class="compare-panel"><h3>🔓 Plain HTTP</h3><p>No TLS handshake and no built-in transport encryption. A network observer can read or alter the HTTP request in transit.</p><code>GET /checkout?item=book HTTP/1.1
+Host: shop.example</code></div>
+<div class="compare-panel"><h3>🔒 HTTPS using TLS 1.3</h3><p>After server authentication and key establishment, the HTTP request and response are encrypted and integrity-protected.</p><code>TLS application_data
+[encrypted, authenticated bytes]</code></div>
+</div>
+<p class="mini-note"><strong>Model limitations:</strong> This is an educational visualisation, not a real TLS connection or cryptographic implementation. It models a standard certificate-authenticated TLS 1.3 handshake without 0-RTT, client certificates, or session resumption. In real use, DNS queries, IP addresses, packet sizes and timing may expose metadata; SNI in a typical ClientHello is visible unless protections such as ECH apply. The sample certificate and domains are fictional.</p>
+</section>
+<footer>Information Security (IIS) · Module 2 · Created by Zeeshan Basit · <a href="https://www.rfc-editor.org/rfc/rfc8446" target="_blank" rel="noopener noreferrer">TLS 1.3 standard (RFC 8446) ↗</a></footer>
+</main>
+<script>
+(function(){
+"use strict";
+var scenarios={
+ trusted:{label:"✓ Trusted website",name:"shop.example",cert:"shop.example",issuer:"Example Root CA (trusted)",expiry:"30 Nov 2027",valid:true,reason:"The website name matches, the certificate is within its validity period, and the chain leads to a trusted CA."},
+ mismatch:{label:"Wrong website name",name:"shop.example",cert:"login.example",issuer:"Example Root CA (trusted)",expiry:"30 Nov 2027",valid:false,reason:"The certificate identifies login.example, not the requested shop.example. The browser must reject this identity mismatch."},
+ expired:{label:"Expired certificate",name:"shop.example",cert:"shop.example",issuer:"Example Root CA (trusted)",expiry:"15 Feb 2025",valid:false,reason:"The certificate's validity period has ended. A trusted signature does not make an expired certificate acceptable."},
+ rogue:{label:"Untrusted / attacker",name:"shop.example",cert:"shop.example",issuer:"Unknown Network CA (untrusted)",expiry:"30 Nov 2027",valid:false,reason:"A network attacker could present a certificate for the right hostname, but its signing chain is not trusted by this browser. The connection is blocked."}
+};
+var stages=[
+{title:"Visit website",flow:"local",packet:"User enters https://shop.example/checkout",explain:"You type a secure web address into the browser. The browser must first find and connect to the server, typically using DNS and a transport connection. This model starts just before the TLS handshake.",insight:"HTTPS means HTTP carried inside a protected TLS connection. The padlock does not appear just because the address begins with https://.",observer:"Depending on DNS and transport choices, the observer may see the destination IP and connection metadata. The website content has not been requested yet.",identity:"Not checked yet",keys:"Not established",data:"Not sent",browser:"Wants a secure connection",server:"Ready to accept TLS"},
+{title:"ClientHello",flow:"forward",packet:"ClientHello\nTLS 1.3 supported; cipher suites; ephemeral key_share; SNI=shop.example (normally)",explain:"The browser sends a ClientHello announcing that it supports TLS 1.3, offering cryptographic choices, and including an ephemeral key-share value for key agreement. In a typical connection it also indicates the hostname using SNI.",insight:"ClientHello itself is normally visible on the network. Its key share is public; it is not the secret used to encrypt website data.",observer:"Can generally read ClientHello details, including offered settings and SNI when ECH is not used. It cannot derive the session keys from the public key share alone.",identity:"Not checked yet",keys:"Browser creates ephemeral key pair",data:"Not sent",browser:"Sends public key share",server:"Receives supported options"},
+{title:"ServerHello",flow:"reverse",packet:"ServerHello\nTLS 1.3 selected; TLS_AES_128_GCM_SHA256; server ephemeral key_share",explain:"The server replies with the chosen TLS version, cipher suite, and its own ephemeral key-share value. Using ephemeral (EC)DHE and key derivation, each endpoint computes the same handshake secrets independently, without sending those secrets across the network.",insight:"In TLS 1.3, the server's identity is not established merely by sharing a key. The browser still has to authenticate the server certificate and handshake.",observer:"Can read ServerHello and both public key shares, but cannot compute the private shared secret from the public values under the protocol's security assumptions.",identity:"Still unverified",keys:"Handshake traffic keys derived",data:"Not sent",browser:"Derives handshake keys",server:"Derives handshake keys"},
+{title:"EncryptedExtensions",flow:"reverse",packet:"TLS encrypted handshake record\n[EncryptedExtensions — contents hidden]",explain:"Immediately after ServerHello, the server sends EncryptedExtensions. This is the first encrypted handshake message. Both endpoints now use derived handshake traffic keys to protect most of the remaining handshake.",insight:"Not every part of the TLS handshake is plaintext. In TLS 1.3, the certificate itself is sent inside encrypted handshake records.",observer:"Can see TLS records and their size, not the encrypted extension values or later certificate contents.",identity:"Still unverified",keys:"Handshake records protected",data:"Not sent",browser:"Decrypts server extensions",server:"Encrypts handshake details"},
+{title:"Certificate & proof",flow:"reverse",packet:"TLS encrypted handshake records\n[Certificate + CertificateVerify — contents hidden]",explain:"The server sends its certificate chain. A certificate binds a website identity to a public key and an issuer's signature. The server also sends CertificateVerify: a digital signature made with the matching private key over the handshake transcript. The browser can decrypt and inspect both.",insight:"The certificate public key verifies the server's signature; it does not directly encrypt the HTTP session. Traffic keys come from the key exchange and key schedule.",observer:"In a typical TLS 1.3 handshake, the certificate and CertificateVerify are encrypted on the wire, even though the browser can read them.",identity:"Certificate received; proof checked",keys:"Handshake traffic keys active",data:"Not sent",browser:"Inspects certificate + signature",server:"Proves private-key ownership"},
+{title:"Browser validates",flow:"local",packet:"Local browser checks\n✓ Name / validity / trusted chain / signatures\n(No certificate-validation packet is required)",explain:"The browser checks that the requested hostname is covered by the certificate, that the validity period is acceptable, that the certificate chain reaches a trusted authority, and that the relevant signatures and TLS authentication checks are valid.",insight:"A valid certificate is about authenticated identity. If any essential check fails, the browser must not treat the connection as trusted. This activity stops rather than offering a risky bypass.",observer:"These checks take place in the browser. No readable HTTP request has been sent and the observer does not see the browser's private validation logic.",identity:"Depends on scenario",keys:"Handshake keys exist, but trust is not automatic",data:"Not sent",browser:"Decides whether server is trusted",server:"Waiting for completion"},
+{title:"Finished messages",flow:"both",packet:"TLS encrypted handshake records\n[Server Finished] ←\n[Client Finished] →",explain:"The server sends Finished, letting the browser verify that the handshake has not been altered and that the server has the right derived secrets. After checking the server's authentication and Finished, the browser sends its own Finished. The completed handshake establishes separate traffic keys for protected application data.",insight:"These Finished messages authenticate the handshake transcript. The two sides can now exchange encrypted application data using symmetric authenticated encryption (AEAD).",observer:"Cannot read Finished message contents. It can observe that encrypted records pass in both directions.",identity:"Authenticated server",keys:"Application traffic keys ready",data:"Ready to send",browser:"Verifies Finished; sends Finished",server:"Verifies client Finished"},
+{title:"Secure HTTP traffic",flow:"both",packet:"TLS application_data\n[AEAD-encrypted HTTP GET /checkout]\n[AEAD-encrypted HTTP response]",explain:"Only now does the browser send the normal HTTP request inside TLS application records. The server decrypts the request, responds, and encrypts the response. A passive network observer sees ciphertext rather than the page, cookies, request path, or form values.",insight:"TLS provides confidentiality and integrity in transit and authenticates the server. It cannot guarantee that the website itself is honest, free from malware, or safe from phishing.",observer:"Sees IP addresses, timing, record sizes and other metadata, but cannot read or silently modify the encrypted HTTP request or response without detection.",identity:"Server authenticated",keys:"Symmetric application traffic keys in use",data:"Encrypted + integrity protected",browser:"Renders HTTPS page",server:"Returns encrypted response"}
+];
+var checkpoints={
+1:{question:"Which part is normally sent in the clear at the start of TLS 1.3?",answers:["ClientHello with supported options and key share","The HTTP request body","The server certificate"],correct:0,why:"ClientHello is normally visible; HTTP data comes later, and TLS 1.3 protects the certificate in encrypted handshake records."},
+4:{question:"What does the server use for CertificateVerify?",answers:["Its certificate's public key to encrypt the page","Its private key to sign the handshake transcript","Its domain name as an encryption key"],correct:1,why:"The browser verifies this signature using the certified public key. Session traffic encryption uses separate derived symmetric keys."},
+7:{question:"What can a passive observer still learn about a protected HTTPS connection?",answers:["Every URL path and all cookies","The plaintext response page","IP addresses, packet sizes and timing"],correct:2,why:"TLS encrypts the HTTP data, not every form of network metadata. DNS or SNI can also reveal domain information in some configurations."}
+};
+var scenario="trusted",stage=0,answers={},contrast=false;
+function byId(id){return document.getElementById(id)}
+function escaped(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function validation(){var v=scenarios[scenario];return v.valid}
+function setText(id,txt){byId(id).textContent=txt}
+function activeQuestion(){if(stage===5){var good=validation();return {question:"Should the browser continue to an authenticated HTTPS session with this certificate?",answers:["Yes, continue","No, block the connection"],correct:good?0:1,why:good?"Yes. The name, validity and trusted chain check out in this example.":"No. "+scenarios[scenario].reason}}return checkpoints[stage]}
+function renderScenarios(){
+var el=byId("scenarios");el.innerHTML="";
+Object.keys(scenarios).forEach(function(key){
+var btn=document.createElement("button");btn.type="button";btn.className="scenario";btn.textContent=scenarios[key].label;btn.setAttribute("aria-pressed",String(scenario===key));
+btn.addEventListener("click",function(){scenario=key;stage=0;answers={};render()});el.appendChild(btn)
+})
+}
+function renderSteps(){
+var box=byId("steps");box.innerHTML="";
+stages.forEach(function(s,i){
+var b=document.createElement("button");b.type="button";b.className="step"+(i===stage?" active":i<stage?" done":"");b.disabled=!validation()&&i>5;b.setAttribute("aria-current",i===stage?"step":"false");b.innerHTML="<b>"+(i+1)+"</b><span>"+escaped(s.title)+"</span>";
+b.addEventListener("click",function(){stage=i;render()});box.appendChild(b)
+})
+}
+function renderCert(){
+var el=byId("certViewer");el.hidden=stage<4;el.innerHTML="";
+if(stage<4)return;
+var v=scenarios[scenario],isName=v.name===v.cert,isDate=scenario!=="expired",isTrust=scenario!=="rogue";
+var html='<div class="cert-head"><span>🔎 Browser certificate inspector</span><span class="small">Fictional example</span></div><table>'+
+'<tr><td>Requested site</td><td>'+escaped(v.name)+'</td></tr>'+
+'<tr><td>Certificate SAN</td><td>'+escaped(v.cert)+' <span class="'+(isName?'ok-text':'fail-text')+'">'+(isName?'✓ Matches':'✕ Mismatch')+'</span></td></tr>'+
+'<tr><td>Certificate issuer</td><td>'+escaped(v.issuer)+' <span class="'+(isTrust?'ok-text':'fail-text')+'">'+(isTrust?'✓ Trusted':'✕ Untrusted')+'</span></td></tr>'+
+'<tr><td>Valid until</td><td>'+escaped(v.expiry)+' <span class="'+(isDate?'ok-text':'fail-text')+'">'+(isDate?'✓ In date':'✕ Expired')+'</span></td></tr>'+
+'<tr><td>Private-key proof</td><td><span class="ok-text">✓ CertificateVerify signature verifies</span></td></tr></table>';
+el.innerHTML=html
+}
+function renderQuiz(){
+var q=activeQuestion(),area=byId("quizArea");area.hidden=!q;
+if(!q)return;
+setText("quizQuestion",q.question);
+var areaChoices=byId("quizChoices");areaChoices.innerHTML="";
+var existing=answers[stage];
+q.answers.forEach(function(a,i){
+var b=document.createElement("button");b.type="button";b.className="choice";
+if(existing!==undefined){b.disabled=true;if(i===q.correct)b.classList.add("correct");if(i===existing&&i!==q.correct)b.classList.add("incorrect")}
+b.textContent=String.fromCharCode(65+i)+". "+a;
+b.addEventListener("click",function(){if(answers[stage]!==undefined)return;answers[stage]=i;render()});
+areaChoices.appendChild(b)
+});
+var feedback=byId("quizFeedback");feedback.className="feedback";
+if(existing===undefined)feedback.textContent="Choose an answer to get immediate feedback.";
+else{var correct=existing===q.correct;feedback.classList.add(correct?"positive":"negative");feedback.textContent=(correct?"Correct. ":"Not quite. ")+q.why}
+}
+function render(){
+renderScenarios();renderSteps();
+var s=stages[stage],v=scenarios[scenario],failed=stage===5&&!validation();
+setText("hostname",v.name);setText("stageCount","Step "+(stage+1)+" of "+stages.length);setText("stepTitle",s.title);setText("stepExplanation",s.explain);
+var ins=byId("insight");ins.className="callout"+(failed?" fail":"");
+ins.textContent=stage===5?(validation()?"✓ Verified: "+v.reason:"✕ Connection rejected: "+v.reason):s.insight;
+var stat=byId("connectionStatus");
+if(failed){stat.className="pill bad";stat.textContent="⛔ Connection blocked — certificate validation failed"}
+else if(stage===7){stat.className="pill good";stat.textContent="🔒 Authenticated HTTPS — encrypted traffic"}
+else if(stage>=6){stat.className="pill good";stat.textContent="✓ Handshake completed successfully"}
+else{stat.className="pill";stat.textContent="TLS 1.3 handshake in progress"}
+var count=Object.keys(answers).length;var correct=Object.keys(answers).filter(function(k){var n=Number(k);var q=n===5?{correct:validation()?0:1}:checkpoints[n];return q&&answers[k]===q.correct}).length;
+setText("score","Knowledge checks: "+count+" / 4 answered · "+correct+" correct");
+var track=byId("track");
+track.className="track"+(s.flow==="reverse"?" reverse":s.flow==="local"?" local":"");
+setText("wireMode",stage===7?"Application data":stage>=3?"Encrypted handshake":"Connection setup");
+setText("wireLabel",s.flow==="local"?"Browser-side step":s.flow==="forward"?"Browser → Server":s.flow==="reverse"?"Server → Browser":"Both directions");
+setText("wireCaption",stage>=3&&s.flow!=="local"?"Encrypted TLS records":stage===1?"Typically readable":stage===2?"Readable ServerHello":s.flow==="local"?"No TLS packet here":"Encrypted both ways");
+setText("moving",stage>=3?"🔒":"📨");
+setText("packetHeading",stage===5?"Inside the browser":"On the network");
+setText("packetBody",s.packet);
+setText("observerText",s.observer);
+setText("identityState",stage===5?(failed?"⛔ Failed": "✓ Validated"):s.identity);
+setText("keyState",s.keys);setText("dataState",failed?"Not sent — site blocked":s.data);
+setText("browserState",failed?"⛔ Rejects certificate":s.browser);
+setText("serverState",failed?"Cannot complete trusted session":s.server);
+renderCert();renderQuiz();
+byId("back").disabled=stage===0;
+byId("next").disabled=stage===7||failed;
+byId("next").textContent=stage===6?"Show encrypted traffic →":"Next step →";
+setText("navHint",failed?"Choose another scenario or restart to run a successful handshake.":stage===7?"Secure request complete. Try another certificate scenario.":"Click a numbered step to jump within the handshake.");
+byId("contrast").className="contrast"+(contrast?" show":"");byId("compare").setAttribute("aria-expanded",String(contrast));byId("compare").textContent=contrast?"Hide HTTP comparison":"Show HTTP comparison"
+}
+byId("back").addEventListener("click",function(){if(stage>0){stage--;render()}});
+byId("next").addEventListener("click",function(){if(stage<7&&!(stage===5&&!validation())){stage++;render()}});
+byId("reset").addEventListener("click",function(){stage=0;answers={};render()});
+byId("compare").addEventListener("click",function(){contrast=!contrast;render()});
+render()
+})();
+</script>
+</body>
+</html>
