@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Evidence-led case investigation for Introduction to Information Security, Weeks 1–2.">
+  <title>Nordic Retail · Security Investigation</title>
+  <style>
+:root { --bg:#f3f5f8; --paper:#fff; --ink:#17253a; --muted:#627086; --line:#dfe5ec; --line-soft:#e9edf2; --blue:#1769e0; --blue-pale:#e8f1ff; --nav:#0c192b; --nav-line:#28364b; --nav-muted:#9cacc1; --teal:#0c796a; --amber:#945b11; --shadow:0 12px 32px rgba(18,33,54,.09); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; }
+* {box-sizing:border-box} html {scroll-behavior:smooth} body {margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55} button,textarea,input {font:inherit} button {cursor:pointer} button:focus-visible,input:focus-visible,textarea:focus-visible,.nav-item:focus-visible,.evidence-card:focus-visible {outline:3px solid #80b3fb;outline-offset:2px} a {color:var(--blue);text-decoration:none} a:hover {text-decoration:underline} p {margin:0 0 12px} h1,h2,h3,h4 {line-height:1.25;margin:0} h1 {font-size:clamp(28px,3vw,40px);letter-spacing:-1.1px} h2 {font-size:21px;letter-spacing:-.45px} h3 {font-size:16px} small {font-size:12px} .eyebrow {font-size:10px;letter-spacing:1.6px;font-weight:800;color:#7a8ca4}
+.app-shell {display:grid;grid-template-columns:254px minmax(510px,1fr) 288px;min-height:100vh;max-width:1880px;margin:auto}.sidebar {background:var(--nav);color:white;padding:27px 14px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:auto}.brand {display:flex;align-items:center;gap:12px;padding:3px 12px 25px}.brand b{display:block;font-size:16px;letter-spacing:-.25px}.brand small{display:block;letter-spacing:1.6px;font-size:8px;color:#8e9db2;font-weight:800}.brand-icon{width:42px;height:42px;background:#1769e0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;letter-spacing:-1px;padding:0}.brand-icon span {color:#91c4ff}.case-reference {background:#14243a;border:1px solid #22354e;border-radius:13px;margin:0 9px 24px;padding:15px 14px;display:flex;flex-direction:column;gap:5px}.case-reference strong{font-size:17px;letter-spacing:.35px}.tag {font-size:11px;color:#a2b8d5}.dot::before{content:"";display:inline-block;width:6px;height:6px;background:#30be9b;border-radius:50%;margin-right:8px;vertical-align:1px}.nav-section-label {padding:5px 16px 12px;color:#7e8ca2;font-size:10px;letter-spacing:1.4px;font-weight:900}.nav-item {width:100%;border:0;text-align:left;color:#b4c0d1;background:none;border-radius:10px;padding:12px 13px;margin:2px 0;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:650}.nav-item .nav-glyph {display:grid;place-items:center;width:25px;height:25px;background:#1d2b40;color:#a7b7cf;border-radius:7px;font-size:12px;flex-shrink:0}.nav-item:hover{background:#172940;color:#fff}.nav-item.active{background:#1c3973;color:white}.nav-item.active .nav-glyph{background:#2f64bb;color:#fff}.nav-item .check{margin-left:auto;color:#62cc9b;font-size:14px}.sidebar-bottom {margin-top:auto;padding:25px 13px 10px;color:#8e9db2;font-size:12px;border-top:1px solid var(--nav-line)}.sidebar-bottom p{margin-bottom:14px}.quiet {border:none;background:none;color:#b5c8e2;padding:0;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.main{min-width:0}.topbar{height:75px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.9);display:flex;justify-content:space-between;align-items:center;padding:0 43px;gap:20px;position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}.breadcrumbs{font-weight:800;color:#8190a4;font-size:10px;letter-spacing:1px}.breadcrumbs .sep{margin:0 12px;color:#bdc6d2}.breadcrumbs span:last-child{color:#42536d}.header-actions{display:flex;align-items:center;gap:13px}.saved{font-size:11px;color:#728198;white-space:nowrap}.saved::before{content:"✓";color:#20a474;margin-right:5px}.content{padding:43px 44px 80px;max-width:1050px;margin:0 auto}.headline-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:13px}.overline{display:inline-block;color:var(--blue);font-size:11px;letter-spacing:1.9px;font-weight:900}.hero-title{margin-bottom:16px}.lead{font-size:16px;color:#465772;line-height:1.7;max-width:700px}.pill{display:inline-flex;align-items:center;border:1px solid #d9e2ed;color:#4f607a;border-radius:100px;padding:6px 11px;font-size:11px;font-weight:750;white-space:nowrap;background:#fff}.card,.question,.evidence-row,.prompt-panel{background:var(--paper);border:1px solid var(--line);border-radius:15px}.card{padding:25px;margin-top:23px}.card h2{margin-bottom:12px}.callout{background:#eaf2ff;border:1px solid #cfe0f7;border-radius:12px;padding:17px 20px;color:#28476b}.callout strong{display:block;margin-bottom:6px}.callout p:last-child{margin:0}.alert{background:#fff6e8;border-color:#f7deb4;color:#725016}.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.metric{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:17px}.metric strong{display:block;font-size:24px;letter-spacing:-.7px}.metric small{color:var(--muted);font-weight:650}.timeline{border-left:2px solid #e1e8f0;margin:18px 8px;padding-left:22px}.timeline li{padding:1px 0 14px;list-style:none;position:relative;color:#4a5a70}.timeline li::before{content:"";width:9px;height:9px;border:3px solid white;background:#3e81df;border-radius:50%;position:absolute;left:-29px;top:6px;box-shadow:0 0 0 1px #90b7e9}.timeline li strong{display:block;color:var(--ink)}.list-clean{padding-left:20px;color:#475972}.list-clean li{margin:8px 0}.progress-track{height:9px;border-radius:999px;background:#e5eaf1;overflow:hidden}.progress-track>div{height:100%;width:0;background:linear-gradient(90deg,#2376ea,#26b79b);transition:width .2s}.progress-overview{margin-top:22px;padding:18px 20px;background:white;border:1px solid var(--line);border-radius:12px}.progress-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:#52647d;margin-bottom:11px}.primary,.secondary{border-radius:9px;border:1px solid transparent;padding:11px 16px;font-weight:800;font-size:13px;transition:background .15s,transform .15s}.primary{color:white;background:var(--blue)}.primary:hover{background:#0854c7}.secondary{background:#fff;border-color:#d4dee9;color:#294363}.secondary:hover{background:#f1f5fb}.primary.small{padding:8px 13px;font-size:11px}.button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.stage-meta{display:flex;align-items:center;gap:12px;margin:20px 0}.stage-number{width:35px;height:35px;border-radius:10px;background:#dceafb;color:#0d64ce;display:grid;place-items:center;font-size:13px;font-weight:900}.stage-progress{font-size:12px;color:var(--muted)}.prompt-panel{padding:18px 21px;background:#f8fbfe;margin:22px 0}.prompt-panel h3{margin-bottom:6px}.prompt-panel p{color:#54677e;margin:0;font-size:14px}.filechips{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}.chip{border:1px solid #d3e1f1;background:#fff;color:#2260a8;border-radius:7px;padding:5px 8px;font-size:11px;font-weight:800}.chip:hover{background:#e8f1ff}.question{margin:15px 0;padding:23px}.question-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.question-number{border:1px solid #dce4ef;background:#f1f5fb;color:#4a658a;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:900;flex-shrink:0}.question p{color:#4e6077;line-height:1.7;font-size:14px;margin-bottom:13px}.question textarea{display:block;width:100%;padding:13px 15px;min-height:140px;resize:vertical;line-height:1.55;background:#fbfcfe;color:#25354b;border:1px solid #d7e0eb;border-radius:10px;font-size:13px}.question-foot{margin-top:8px;color:#8996a7;font-size:11px;text-align:right}.section-actions{display:flex;justify-content:space-between;gap:13px;margin:25px 0}.text-link {font-size:13px;font-weight:750}.file-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:22px 0}.evidence-card{display:block;width:100%;text-align:left;border:1px solid var(--line);background:white;border-radius:13px;padding:18px;transition:transform .13s,border-color .13s,box-shadow .13s}.evidence-card:hover{border-color:#a5bddd;box-shadow:var(--shadow);transform:translateY(-2px)}.file-title{display:block;font-size:15px;font-weight:800;margin:7px 0}.file-summary{display:block;font-size:12px;color:#627086;line-height:1.6}.file-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:15px;font-size:11px;color:#7b8da3}.file-id{font-size:11px;letter-spacing:1.3px;font-weight:900;color:#246fd1}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:19px}.filter{padding:7px 12px;border:1px solid #dae3ee;background:white;border-radius:100px;color:#52657c;font-size:12px;font-weight:700}.filter.active{color:white;background:#1b5cad;border-color:#1b5cad}.input,.text-input{border:1px solid #cdd8e5;border-radius:9px;padding:10px 12px;width:100%;font:inherit;font-size:14px;color:var(--ink);background:#fff}.form-label{display:block;font-weight:800;font-size:12px;margin-bottom:7px}.student-box{margin-top:17px;max-width:430px}.preview-report{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;max-height:370px;overflow:auto;font-size:12px;line-height:1.7;color:#405168}.footer-note {color:#7c899b;font-size:12px;margin-top:25px}
+.evidence-rail{border-left:1px solid var(--line);background:#fff;padding:27px 16px;position:sticky;top:0;height:100vh;overflow:auto}.rail-head{display:flex;justify-content:space-between;align-items:center;gap:4px}.rail-head h2{font-size:18px;margin-top:4px}.count{border:1px solid #e3e9f1;border-radius:100px;padding:4px 7px;font-size:10px;color:#6b7f99;white-space:nowrap}.rail-help{margin:16px 0 20px;font-size:12px;color:#7e8b9c;line-height:1.6}.rail-list{display:flex;flex-direction:column;gap:8px}.rail-entry{display:block;text-align:left;width:100%;border:1px solid var(--line-soft);border-radius:10px;background:#fbfcfe;padding:11px 12px}.rail-entry:hover{background:#eef5ff;border-color:#b9d4f7}.rail-entry strong{display:block;font-size:12px;margin:4px 0;color:#243850}.rail-entry span{font-size:10px;color:#647892}.rail-entry .file-id{font-size:10px;color:#2769ba}.modal-backdrop{position:fixed;inset:0;background:rgba(8,18,34,.65);z-index:100;display:grid;place-items:center;padding:18px}.modal-backdrop[hidden]{display:none}.modal{width:min(810px,100%);max-height:min(90vh,850px);display:flex;flex-direction:column;background:white;border-radius:16px;box-shadow:0 40px 100px rgba(0,0,0,.27);overflow:hidden}.modal-header{padding:24px 28px 19px;border-bottom:1px solid var(--line);display:flex;align-items:start;justify-content:space-between;gap:20px}.modal-header h2{font-size:22px;margin:6px 0}.modal-header p{color:#6d7c90;font-size:12px;margin:0}.close{border:0;background:#f0f3f8;padding:8px 12px;border-radius:8px}.modal-body{padding:23px 28px 33px;overflow-y:auto;color:#3d5068;line-height:1.7}.modal-body>p{margin-bottom:17px}.modal-body blockquote{margin:15px 0;border-left:3px solid #dfaa5f;background:#fff9ed;padding:15px;color:#624820}.modal-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--line);padding:12px 28px}.modal-footer span{font-size:10px;letter-spacing:1px;font-weight:800;color:#8d9bab}.table-wrap{width:100%;overflow-x:auto;margin:16px 0}table{border-collapse:collapse;width:100%;font-size:12px}th{background:#f1f5f9;color:#42536b;font-size:11px;text-align:left}td,th{padding:11px;border-bottom:1px solid #e2e8f0;vertical-align:top}tr:last-child td{border-bottom:0}.message{background:#f3f6fa;border-radius:10px;padding:14px;margin:12px 0}.message>div{display:grid;grid-template-columns:65px 1fr;padding:4px 0;font-size:12px;gap:10px}.message span{color:#8493a8}.message strong{font-weight:600;overflow-wrap:anywhere}.mono{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:#101f32;color:#dcecff;border-radius:10px;padding:18px;line-height:1.7;margin:15px 0;font-family:"Consolas","SFMono-Regular",monospace}.evidence-note{font-size:12px;color:#8996a5}.hashgrid{display:grid;gap:10px}.hashgrid>div{background:#f3f6fa;border:1px solid #e1e7ef;border-radius:10px;padding:13px}.hashgrid small{display:block;font-weight:800;color:#506982;margin-bottom:6px}.hashgrid code{overflow-wrap:anywhere;font-size:11px}.no-results{font-size:13px;color:#667890;padding:15px}
+@media(max-width:1370px){.app-shell{grid-template-columns:230px minmax(450px,1fr) 242px}.topbar{padding:0 26px}.content{padding:36px 28px 70px}.evidence-rail{padding:25px 12px}.rail-head{flex-wrap:wrap}}@media(max-width:1090px){.app-shell{grid-template-columns:215px minmax(0,1fr)}.evidence-rail{display:none}.content{max-width:900px}.sidebar{padding-left:9px;padding-right:9px}}@media(max-width:720px){.app-shell{display:block}.sidebar{position:relative;height:auto;padding:15px 12px 9px;overflow:visible}.brand{padding:2px 5px 10px}.case-reference,.sidebar-bottom,.nav-section-label{display:none}#main-nav{display:flex;gap:6px;overflow-x:auto;padding:7px 1px}.nav-item{min-width:max-content;width:auto;font-size:12px;padding:8px 9px;margin:0}.nav-item .nav-glyph{display:none}.nav-item .check{display:none}.topbar{position:relative;height:auto;padding:11px 16px;align-items:start}.breadcrumbs{font-size:9px;margin-top:10px}.header-actions{flex-direction:column-reverse;align-items:end;gap:2px}.saved{font-size:10px}.content{padding:27px 16px 55px}.overview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.metric{padding:13px}.metric strong{font-size:20px}.metric small{font-size:10px}.file-grid{grid-template-columns:1fr}.modal-header,.modal-body,.modal-footer{padding-left:17px;padding-right:17px}.modal-footer span{display:none}.headline-row{align-items:start;flex-direction:column}.section-actions{flex-wrap:wrap}}
+@media print{.sidebar,.evidence-rail,.topbar,.button-row,.section-actions,.modal-backdrop{display:none!important}.app-shell{display:block}.main{width:100%}.content{padding:0}.card,.question{break-inside:avoid}body{background:white}}
+
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Case navigation">
+      <div class="brand"><div class="brand-icon" aria-hidden="true">N<span>R</span></div><div><b>Nordic Retail</b><small>SECURITY INVESTIGATION</small></div></div>
+      <div class="case-reference"><span class="eyebrow">ACTIVE CASE</span><strong>NR-2026-014</strong><span class="tag dot">Simulation · Week 1 + 2</span></div>
+      <nav id="main-nav" aria-label="Investigation sections"></nav>
+      <div class="sidebar-bottom"><p><a href="../../" style="color:#d3e7ff;text-decoration:underline">← Back to IIS activities</a></p><p>Evidence-based decisions. No solutions are revealed during the investigation.</p><button type="button" id="btn-reset" class="quiet">Reset my work</button></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="breadcrumbs"><span>INTRODUCTION TO INFORMATION SECURITY</span><span class="sep">/</span><span id="top-label">Briefing</span></div><div class="header-actions"><span class="saved" id="saved-status" role="status" aria-live="polite">Saved on this device</span><button type="button" id="btn-export-top" class="primary small">Export report ↗</button></div></header>
+      <div class="content" id="content" tabindex="-1"></div>
+    </main>
+    <aside class="evidence-rail" aria-label="Evidence quick reference"><div class="rail-head"><div><span class="eyebrow">REFERENCE</span><h2>Evidence locker</h2></div><span class="count" id="evidence-count">12 files</span></div><div class="rail-help">Open a file at any point during the investigation. Reference its ID in your answers.</div><div id="rail-list" class="rail-list"></div></aside>
+  </div>
+  <div class="modal-backdrop" id="evidence-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><div><span class="eyebrow" id="modal-id"></span><h2 id="modal-title"></h2><p id="modal-date"></p></div><button id="modal-close" class="close" type="button" aria-label="Close evidence file">✕</button></div><div id="modal-body" class="modal-body"></div><div class="modal-footer"><span>SIMULATED EVIDENCE · STUDENT INVESTIGATION</span><button class="secondary" id="modal-done" type="button">Close file</button></div></div></div>
+  <script>
+const CASE = {
+  title: 'The Nordic Retail Investigation',
+  subtitle: 'Case NR-2026-014 · Weeks 1–2 · Introduction to Information Security',
+  briefing: `Nordic Retail AS operates 12 retail shops and an online store. The organization has approximately 80 employees and a small IT team. On Tuesday 20 October 2026, IT received several reports involving employee accounts, shared files and unusual system activity. Management also wants an immediate review of weaknesses found during a routine vulnerability scan. You have joined the investigation team as a junior security analyst. Your assignment is to establish what is known, what remains uncertain, and which actions should be prioritized.`,
+  rules: [
+    'All people, systems, domains, IP addresses and events in this case are fictional. CVE-2021-44228 is a real published vulnerability.',
+    'Evidence is not the same as proof. State when your conclusion is a possibility rather than a confirmed finding.',
+    'Use evidence IDs (for example, E03) when explaining your conclusions.',
+    'Do not try to access the example addresses, websites or systems. This is an entirely simulated investigation.',
+    'Your work is saved in this browser. Export the report before switching computers or clearing browser data.'
+  ],
+  evidence: [
+    {
+      id: 'E01', category: 'Inventory', time: '20 Oct · 07:30', title: 'Assets and business context', teaser: 'System owners, exposure and operational importance.',
+      html: `<p>IT produced the following snapshot before the incidents were reported.</p>
+        <div class="table-wrap"><table><thead><tr><th>Asset</th><th>Purpose</th><th>Access / protection</th></tr></thead><tbody>
+          <tr><td><strong>WEB-01</strong></td><td>Online orders and customer accounts</td><td>Public HTTPS site; revenue-critical</td></tr>
+          <tr><td><strong>APP-LAB-02</strong></td><td>Internal testing</td><td>Restricted lab network; no direct public route</td></tr>
+          <tr><td><strong>FIN-04</strong></td><td>Finance employee laptop</td><td>Company account; shared finance folders</td></tr>
+          <tr><td><strong>FS-01</strong></td><td>Finance document share</td><td>Finance users have read/write access</td></tr>
+          <tr><td><strong>WH-07</strong></td><td>Warehouse workstation</td><td>Ordinary employee workstation</td></tr>
+          <tr><td><strong>CAM-01–04</strong></td><td>Network security cameras</td><td>Managed by a web interface</td></tr>
+          <tr><td><strong>HR-PORTAL</strong></td><td>Staff records and payslips</td><td>Internal web application</td></tr>
+        </tbody></table></div>
+        <p>The web store accepts orders around the clock. A prolonged outage or disclosure of customer records could have serious consequences. The finance team processes supplier payments and payroll information.</p>`
+    },
+    {
+      id: 'E02', category: 'Email', time: '20 Oct · 08:04', title: 'Message received by finance', teaser: 'A message requesting urgent Microsoft 365 account verification.',
+      html: `<div class="message"><div><span>From</span><strong>"IT Support" &lt;helpdesk@account-verify.example&gt;</strong></div><div><span>To</span><strong>finance.team@nordicretail.example</strong></div><div><span>Subject</span><strong>Urgent: your Microsoft 365 access will expire</strong></div></div>
+        <blockquote>We detected unusual activity. To avoid account suspension, verify your login within 30 minutes at <strong>login-nordicretail.account-verify.example</strong>. Your manager has approved this security check.</blockquote>
+        <p>Finance employee Sara confirms that she visited the page and typed her username and password at about 08:08. She closed the browser after the page returned an error.</p>
+        <p class="evidence-note">The domains shown above are reserved fictional examples, not working links.</p>`
+    },
+    {
+      id: 'E03', category: 'Authentication', time: '20 Oct · 08:11–08:15', title: 'Identity and audit log extract', teaser: 'Successful login from a new device followed by a payroll export.',
+      html: `<div class="mono">08:11:26  Account: sara.finance@nordicretail.example\n          Result: SIGN-IN SUCCESS\n          Source: 203.0.113.44 (unrecognized device)\n          MFA: NOT REQUIRED\n          Device: unregistered browser\n\n08:14:03  App: HR-PORTAL\n          User: sara.finance@nordicretail.example\n          Action: EXPORT / PAYROLL / 148 RECORDS\n          Result: COMPLETED\n\n08:15:47  Alert: New sign-in location and bulk export\n          Severity: HIGH</div>
+        <p>Sara says she did not knowingly sign in from another device or export payroll records at that time. The IP address is a documentation-only example. IT has <strong>not</strong> determined who controlled the sign-in.</p>
+        <p>Access policy: the finance role permits payroll read/export. There is no MFA requirement for this account.</p>`
+    },
+    {
+      id: 'E04', category: 'Vulnerability', time: '19 Oct · 16:40', title: 'Vulnerability scanner findings', teaser: 'Two applications use the same vulnerable software component.',
+      html: `<div class="table-wrap"><table><thead><tr><th>Host</th><th>Component</th><th>Exposure</th><th>Finding</th></tr></thead><tbody>
+        <tr><td><strong>WEB-01</strong></td><td>log4j-core 2.14.1</td><td>Public-facing web service</td><td>CVE-2021-44228</td></tr>
+        <tr><td><strong>APP-LAB-02</strong></td><td>log4j-core 2.14.1</td><td>Isolated lab application; internal admin access</td><td>CVE-2021-44228</td></tr>
+        </tbody></table></div>
+        <p>The scanner identifies an affected version. It does not establish that either server has been compromised. No patch has been applied. The public server processes customer information; the lab server contains synthetic test records.</p>
+        <p><strong>External research:</strong> Open the official <a target="_blank" rel="noopener noreferrer" href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228">NVD record for CVE-2021-44228</a>. Identify its severity, what the CVE identifier means, and why a technical score is not the same as the company's risk priority.</p>`
+    },
+    {
+      id: 'E05', category: 'Network', time: '20 Oct · 08:20', title: 'Web request and firewall summary', teaser: 'Suspicious probing was recorded, but no confirmed server compromise.',
+      html: `<div class="mono">WEB-01 HTTPS request summary\n08:20–08:29  198.51.100.22  42 unusual requests\n08:26        WAF alert: POSSIBLE EXPLOIT PROBE\n08:26        Request blocked: YES\n08:30        App service: RUNNING\n08:30        Verified attacker code execution: NOT ESTABLISHED</div>
+        <p>There is no confirmed evidence that WEB-01 was exploited. The firewall team asks whether it is safe to wait until the next monthly update cycle to address E04.</p>
+        <p class="evidence-note">A blocked request and a vulnerability finding are not proof of a successful attack.</p>`
+    },
+    {
+      id: 'E06', category: 'Endpoint', time: '20 Oct · 08:47–09:02', title: 'Finance laptop and shared-file incident', teaser: 'An executable with a deceptive name ran shortly before files became inaccessible.',
+      html: `<div class="mono">FIN-04 process timeline\n08:47:12  DOWNLOAD: Invoice_October.pdf.exe\n08:48:06  EXECUTE: Invoice_October.pdf.exe\n08:50:40  FILE CHANGE: \\FS-01\\Finance\\*.xlsx → *.xlsx.locked\n08:51:20  FILE CHANGE: \\FS-01\\Finance\\*.docx → *.docx.locked\n09:02:10  FILE CREATED: READ_TO_RESTORE_FILES.txt</div>
+        <blockquote>Your business files have been encrypted. Contact the operator to recover access.</blockquote>
+        <p>Several finance users cannot open working documents. IT has isolated FIN-04 from the company network. No evidence currently shows that the code replicated automatically to another device.</p>`
+    },
+    {
+      id: 'E07', category: 'Endpoint', time: '20 Oct · 09:10', title: 'Warehouse workstation performance alert', teaser: 'High CPU usage and a process connecting to an unusual service.',
+      html: `<div class="mono">Host: WH-07\nCPU utilisation: 94% for 52 minutes\nProcess: cache-worker.exe\nPath: C:\\Users\\Public\\cache-worker.exe\nOutbound session: pool-maintenance.example:3333\nHelp desk: "Computer is unusually slow"</div>
+        <p>IT has not yet verified the purpose of the executable. It could be unauthorized cryptocurrency mining, another unwanted program, or a legitimate task with a misleading name. Process inspection and vendor verification are pending.</p>`
+    },
+    {
+      id: 'E08', category: 'Integrity', time: '20 Oct · 09:25', title: 'Software update and integrity review', teaser: 'A supplier update was initially blamed; the recorded hashes match.',
+      html: `<p>Employees noticed that an approved stock-management update was installed the previous evening. Someone suggested a supply-chain compromise.</p>
+        <div class="hashgrid"><div><small>Approved package SHA-256</small><code>47c3b3b5429fba8c2ff8eb8e1f15fe7e110887b2ebf077221a6d06b120cb27fb</code></div><div><small>Installed package SHA-256</small><code>47c3b3b5429fba8c2ff8eb8e1f15fe7e110887b2ebf077221a6d06b120cb27fb</code></div></div>
+        <p>The package also passed the organization's existing signature-validation procedure. <strong>What this shows:</strong> the installed package matches the approved package fingerprint. <strong>What it does not show:</strong> that all supplier software is safe or that no supply-chain incident is possible.</p>
+        <p>IT has found no demonstrated connection between this update and the finance files incident.</p>`
+    },
+    {
+      id: 'E09', category: 'Web security', time: '20 Oct · 09:35', title: 'Website configuration and access permissions', teaser: 'Public checkout uses HTTPS; an internal staff application does not.',
+      html: `<div class="table-wrap"><table><thead><tr><th>Service</th><th>Current setup</th></tr></thead><tbody>
+         <tr><td>Online checkout</td><td><strong>HTTPS/TLS</strong>; trusted server certificate; modern TLS enabled</td></tr>
+         <tr><td>HR-PORTAL</td><td><strong>HTTP</strong> on the internal network; handles staff records</td></tr>
+         <tr><td>Finance accounts</td><td>Password login; finance role can view and export payroll</td></tr>
+         <tr><td>Administrator accounts</td><td>Used for configuration; reviewed quarterly</td></tr>
+         <tr><td>Audit trail</td><td>Sign-in and data-export events retained for 30 days</td></tr>
+        </tbody></table></div>
+        <p>The IT manager asks whether installing a TLS certificate on the HR portal would fix unauthorized export by a person logged in with a valid finance account.</p>`
+    },
+    {
+      id: 'E10', category: 'IoT / physical', time: '20 Oct · 10:00', title: 'Camera and building access review', teaser: 'Weak IoT administration and a physical access concern.',
+      html: `<p>Four older security cameras are managed through a web interface. Two still use a vendor-provided default administrator password. The cameras have not received firmware updates for over a year, and their management network can be reached from ordinary office workstations.</p>
+        <p>Separately, a receptionist reports that an unknown visitor may have followed an employee through a badge-controlled door yesterday. No footage has been reviewed. These are weaknesses and leads to investigate; they are not proof that the visitor or cameras caused the incidents.</p>`
+    },
+    {
+      id: 'E11', category: 'Recovery', time: '20 Oct · 10:15', title: 'Backup and recovery status', teaser: 'Backups exist, but their restorability has not been validated recently.',
+      html: `<p>FS-01 has a nightly backup job. The backup dashboard marks the last job as successful at 02:00 on 20 October. No restore test has been completed in the last six months. IT has not established whether all copies are protected against modification by the same compromised credentials.</p>
+        <p>Finance management wants documents restored immediately. Security staff recommend preserving relevant logs and identifying the scope of compromise before connecting recovered systems to production.</p>`
+    },
+    {
+      id: 'E12', category: 'Threat report', time: '20 Oct · 10:30', title: 'Unverified reports and additional threats', teaser: 'AI impersonation, third-party compromise and website-based attacks are possibilities—not proven conclusions.',
+      html: `<p>The manager has received an urgent voicemail that sounds like the finance director, asking for a payment to a new account. Nobody has confirmed the caller through a known contact channel. Staff suspect AI-generated audio, but the audio has not been authenticated or analyzed.</p>
+        <p>Two other employees visited an industry news website yesterday. IT has not determined whether it was compromised. A watering-hole attack is a potential technique worth understanding, not a confirmed event in this case.</p>
+        <p>A supplier recently introduced a blockchain-based loyalty pilot. There is no indication that its smart contract has been exploited. Students should distinguish cryptography protecting a blockchain ledger from application logic that might contain vulnerabilities.</p>`
+    }
+  ],
+  stages: [
+    {id:'stage1', label:'Map the incident', short:'What happened?', minutes:'12–15 min', evidence:['E01','E02','E03','E06','E07'], intro:'Establish the facts before recommending any controls. More than one event may be occurring.', questions:[
+      {id:'q1',title:'Assets and business impact',prompt:'Choose three important assets from E01. For each, explain what the company could lose if it were compromised. Identify at least one confidentiality, integrity or availability impact across your examples.', placeholder:'Asset → purpose → plausible impact → CIA objective(s)...'},
+      {id:'q2',title:'A short incident timeline',prompt:'Using evidence IDs, reconstruct a timeline of at least four significant events. Which events appear connected, and which connections are not yet established?', placeholder:'08:04 — ... (E02). This suggests..., but does not prove...'},
+      {id:'q3',title:'Facts, hypotheses and gaps',prompt:'Identify two confirmed observations, two reasonable hypotheses and two unanswered questions the investigators should pursue. Explain the difference between a vulnerability, an exploit attempt and a confirmed incident using this case.',placeholder:'Confirmed: ... Hypothesis: ... Still need to verify: ...'}
+    ]},
+    {id:'stage2',label:'Prioritize vulnerabilities',short:'Where is the risk?',minutes:'12–15 min',evidence:['E04','E05','E10'],intro:'Investigate technical and organizational weaknesses; do not equate every alert with successful exploitation.',questions:[
+      {id:'q4',title:'Research the published vulnerability',prompt:'Open the NVD link in E04. What is CVE-2021-44228, what is the NVD CVSS v3.1 base score, and what do the terms CVE, NVD and CVSS mean in this investigation?',placeholder:'CVE: ... NVD: ... CVSS: ... Score: ... What the weakness could allow: ...'},
+      {id:'q5',title:'Which host comes first?',prompt:'WEB-01 and APP-LAB-02 have the same vulnerability. Which should be investigated and remediated first, and why? Explain how business impact, network exposure and evidence of exploitation affect prioritization.',placeholder:'My priority is ... because ...; the remaining uncertainties are ...'},
+      {id:'q6',title:'Hardening and layered controls',prompt:'Identify at least three distinct weaknesses or missing controls in E04, E05 and E10. Recommend one realistic preventive or detective measure for each. Is the web server already proven compromised? How could threat intelligence help the IT team assess urgency?',placeholder:'Weakness → threat/risk → control → why it helps...'}
+    ]},
+    {id:'stage3',label:'Protect data and access',short:'Who can do what?',minutes:'12–15 min',evidence:['E02','E03','E08','E09'],intro:'Work out what different security measures protect—and what they do not protect.',questions:[
+      {id:'q7',title:'Apply AAA and MFA',prompt:'Use E03 and E09 to give one case-specific example each of authentication, authorization and accounting. Explain how MFA would change the risk and whether a second memorized PIN alone counts as MFA.',placeholder:'Authentication: ... Authorization: ... Accounting: ... MFA: ...'},
+      {id:'q8',title:'Cryptography choices',prompt:'Explain what TLS protects on the online checkout site, how asymmetric and symmetric cryptography work together during a typical modern TLS connection, and why adding HTTPS alone would not prevent misuse of a compromised finance account.',placeholder:'TLS protects ... Public-key methods ... Session encryption ... Remaining risk ...'},
+      {id:'q9',title:'What does the hash prove?',prompt:'Compare the two SHA-256 values in E08. What conclusion is supported? Explain why hashing is not encryption and whether the evidence is enough to confirm a supply-chain attack.',placeholder:'The hashes are ... This means ... It does not mean ...'}
+    ]},
+    {id:'stage4',label:'Classify suspicious activity',short:'Which attack fits?',minutes:'12–15 min',evidence:['E02','E06','E07','E08','E12'],intro:'Choose the explanations best supported by each set of observations; avoid treating all threats as confirmed.',questions:[
+      {id:'q10',title:'Social engineering analysis',prompt:'Analyze E02: which persuasion techniques are used, what action was the employee pushed to take, and what verification step could have prevented the disclosure? Distinguish ordinary phishing from targeted spear phishing if justified by the evidence.',placeholder:'The email uses ... It aims to ... I would verify by ...'},
+      {id:'q11',title:'Malware and possible cryptojacking',prompt:'What kind of malicious activity does E06 most strongly indicate? Why does the evidence not establish worm-like self-propagation? Evaluate the cryptojacking hypothesis in E07 and identify one additional check before treating it as confirmed.',placeholder:'E06 suggests ... E07 suggests ... To confirm E07 I would ...'},
+      {id:'q12',title:'Alternative attack paths',prompt:'From E08 and E12, identify one potential supply-chain attack, one watering-hole scenario and one AI-assisted impersonation risk. State explicitly which are only possibilities. Briefly explain why cryptography in a blockchain does not prove its smart contract is secure.',placeholder:'Possible technique ... Evidence available ... What would be needed to confirm ...'}
+    ]},
+    {id:'stage5',label:'Write the security assessment',short:'What should happen next?',minutes:'15–20 min',evidence:['E01','E03','E04','E06','E07','E09','E11'],intro:'Present a defensible conclusion to management, not a list of security buzzwords.',questions:[
+      {id:'q13',title:'First-hour response',prompt:'Choose the three most urgent actions for the IT/security team. For each, identify the event or asset it addresses and justify why it cannot wait. Consider containment, access and data preservation.',placeholder:'Priority 1 — Action ...; evidence ...; expected benefit ...'},
+      {id:'q14',title:'Longer-term improvements',prompt:'Recommend four longer-term improvements spanning technical controls, organizational procedures and user awareness. Include at least one detective control and one recovery-related measure.',placeholder:'Recommendation ... Control type ... Risk reduced ...'},
+      {id:'q15',title:'Executive conclusion',prompt:'Write a 120–180 word summary for management. Separate confirmed impacts from suspected causes, identify the greatest business risks, and state which questions remain open.',placeholder:'Management summary (120–180 words): ...'}
+    ]}
+  ]
+};
+
+</script>
+  <script>
+/* Nordic Retail student case — deliberately contains no answer key. */
+(() => {
+  'use strict';
+  const storageKey = 'nr2026-014-investigation-v1';
+  const nav = document.getElementById('main-nav');
+  const container = document.getElementById('content');
+  const modal = document.getElementById('evidence-modal');
+  const evidenceList = document.getElementById('rail-list');
+  let lastOpener = null;
+  let filter = 'All';
+  let statusTimeout = null;
+  let storageAvailable = true;
+  let data = { name: '', answers: {} };
+  try {
+    const stored = JSON.parse(localStorage.getItem(storageKey) || 'null');
+    if (stored && typeof stored === 'object') {
+      data.name = typeof stored.name === 'string' ? stored.name : '';
+      data.answers = stored.answers && typeof stored.answers === 'object' ? stored.answers : {};
+    }
+  } catch (err) { storageAvailable = false; }
+  const allQuestions = CASE.stages.flatMap(s => s.questions);
+  const safeText = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const answered = q => String(data.answers[q.id] || '').trim().length >= 20;
+  const countDone = () => allQuestions.filter(answered).length;
+  const stageDone = s => s.questions.every(answered);
+  const routeName = key => key === 'briefing' ? 'Case briefing' : key === 'evidence' ? 'Evidence locker' : key === 'report' ? 'Your report' : (CASE.stages.find(s => s.id === key)?.label || 'Case briefing');
+  const validRoute = key => ['briefing','evidence','report',...CASE.stages.map(s=>s.id)].includes(key);
+  function store() {
+    try { localStorage.setItem(storageKey, JSON.stringify(data)); } catch (err) { storageAvailable = false; }
+    const status = document.getElementById('saved-status');
+    status.textContent = storageAvailable ? 'Saved on this device' : 'Auto-save unavailable — export often';
+    if (statusTimeout) clearTimeout(statusTimeout);
+    statusTimeout = setTimeout(() => status.textContent = storageAvailable ? 'Saved on this device' : 'Auto-save unavailable — export often', 1200);
+  }
+  const getRoute = () => { const key = location.hash.replace(/^#/, ''); return validRoute(key) ? key : 'briefing'; };
+  function go(route) {
+    if (getRoute() === route) { render(); return; }
+    location.hash = route;
+  }
+  function navItem(id, glyph, name, checked = false) {
+    return `<button type="button" class="nav-item ${getRoute()===id?'active':''}" data-route="${id}" aria-current="${getRoute()===id?'page':'false'}"><span class="nav-glyph" aria-hidden="true">${glyph}</span><span>${safeText(name)}</span>${checked?'<span class="check" aria-label="Completed">✓</span>':''}</button>`;
+  }
+  function renderNav() {
+    nav.innerHTML = `<div class="nav-section-label">THE CASE</div>`
+      + navItem('briefing','01','Briefing') + navItem('evidence','⊞','Evidence locker')
+      + `<div class="nav-section-label" style="margin-top:16px">INVESTIGATION STAGES</div>`
+      + CASE.stages.map((s,i)=>navItem(s.id,String(i+1),s.label,stageDone(s))).join('')
+      + `<div class="nav-section-label" style="margin-top:16px">SUBMISSION</div>`
+      + navItem('report','↗','Final report');
+    nav.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.route)));
+    document.getElementById('top-label').textContent = routeName(getRoute());
+  }
+  function renderRail() {
+    document.getElementById('evidence-count').textContent = `${CASE.evidence.length} files`;
+    evidenceList.innerHTML = CASE.evidence.map(e=>`<button type="button" class="rail-entry" data-evidence="${e.id}"><span class="file-id">${e.id} · ${safeText(e.category)}</span><strong>${safeText(e.title)}</strong><span>${safeText(e.time)}</span></button>`).join('');
+    attachEvidence(evidenceList);
+  }
+  function attachEvidence(root) {root.querySelectorAll('[data-evidence]').forEach(b=>b.addEventListener('click',()=>openEvidence(b.dataset.evidence,b)));}
+  function openEvidence(id,opener) {
+    const e = CASE.evidence.find(x=>x.id===id);
+    if(!e) return;
+    lastOpener = opener || document.activeElement;
+    document.getElementById('modal-id').textContent = `${e.id} · ${e.category}`;
+    document.getElementById('modal-title').textContent = e.title;
+    document.getElementById('modal-date').textContent = `Recorded: ${e.time}`;
+    document.getElementById('modal-body').innerHTML = e.html;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modal-close').focus();
+  }
+  function closeEvidence() {
+    if (modal.hidden) return;
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    if (lastOpener && document.contains(lastOpener)) lastOpener.focus();
+  }
+  function fileChip(id) {return `<button type="button" class="chip" data-evidence="${id}">${id} ↗</button>`;}
+  function progressHTML() {
+    const n = countDone(); return `<div class="progress-overview"><div class="progress-label"><span>Investigation progress</span><strong id="progress-count">${n} of ${allQuestions.length} responses entered</strong></div><div class="progress-track"><div id="progress-fill" style="width:${(n/allQuestions.length)*100}%"></div></div></div>`;
+  }
+  function briefing() {
+    container.innerHTML = `<div class="headline-row"><span class="overline">CONFIDENTIAL · TRAINING CASE FILE</span><span class="pill">60–90 minutes · Independent study</span></div>
+      <h1 class="hero-title">The Nordic Retail<br>Security Investigation</h1><p class="lead">An urgent assignment has landed on your desk. Several suspicious events may be affecting the same company—but you must determine what the available evidence actually tells you.</p>
+      <div class="overview-grid"><div class="metric"><strong>12</strong><small>Evidence files</small></div><div class="metric"><strong>5</strong><small>Investigation stages</small></div><div class="metric"><strong>15</strong><small>Written responses</small></div></div>
+      <div class="card"><span class="overline">YOUR BRIEFING</span><h2 style="margin:9px 0 14px">You are the junior security analyst.</h2><p>${safeText(CASE.briefing)}</p><div class="callout alert"><strong>Mission</strong><p>Identify what is known, assess the risk and give management an evidence-backed response plan. More than one incident may be happening at once.</p></div></div>
+      <div class="card"><h2>How to work through the case</h2><ol class="list-clean">${CASE.rules.map(r=>`<li>${safeText(r)}</li>`).join('')}</ol><p style="margin:15px 0 0">You can open the <strong>Evidence locker</strong> at any time. The questions are not graded automatically: your explanations and use of evidence matter more than selecting a pre-written answer.</p></div>
+      ${progressHTML()}<div class="button-row"><button class="primary" type="button" data-route="stage1">Begin investigation →</button><button class="secondary" type="button" data-route="evidence">Explore evidence first</button></div>
+      <p class="footer-note">This is a fictional investigation for learning purposes. IP addresses and domains are illustrative examples. The real CVE/NVD source is labeled in E04.</p>`;
+  }
+  function renderEvidence() {
+    const cats = ['All',...new Set(CASE.evidence.map(x=>x.category))];
+    const shown = filter==='All'?CASE.evidence:CASE.evidence.filter(x=>x.category===filter);
+    container.innerHTML = `<div class="headline-row"><span class="overline">CASE MATERIALS</span><span class="pill">${CASE.evidence.length} evidence files</span></div><h1 class="hero-title">Evidence locker</h1><p class="lead">Review the evidence. You may return to these files at any stage. A file may support a conclusion, contradict it or leave an important question unanswered.</p><div class="filters">${cats.map(c=>`<button type="button" class="filter ${filter===c?'active':''}" data-filter="${safeText(c)}">${safeText(c)}</button>`).join('')}</div><div class="file-grid">${shown.map(e=>`<button type="button" class="evidence-card" data-evidence="${e.id}"><span class="file-id">${e.id} · ${safeText(e.category)}</span><span class="file-title">${safeText(e.title)}</span><span class="file-summary">${safeText(e.teaser)}</span><span class="file-footer"><span>${safeText(e.time)}</span><b>Open file ↗</b></span></button>`).join('')}</div><div class="button-row"><button type="button" class="primary" data-route="stage1">Start stage 1 →</button></div>`;
+    container.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;renderEvidence();}));
+  }
+  function renderStage(stage) {
+    const num=CASE.stages.indexOf(stage)+1;
+    const filled = stage.questions.filter(answered).length;
+    container.innerHTML=`<div class="headline-row"><span class="overline">INVESTIGATION · STAGE ${num} OF ${CASE.stages.length}</span><span class="pill">Estimated ${stage.minutes}</span></div><h1 class="hero-title">${safeText(stage.label)}</h1><p class="lead">${safeText(stage.intro)}</p><div class="stage-meta"><span class="stage-number">${String(num).padStart(2,'0')}</span><span class="stage-progress" id="stage-status">${filled} of ${stage.questions.length} responses entered</span></div>
+      <div class="prompt-panel"><h3>Relevant evidence</h3><p>Begin with these files, but you may refer to any document in the evidence locker.</p><div class="filechips">${stage.evidence.map(fileChip).join('')}</div></div>
+      ${stage.questions.map((q,i)=>`<section class="question"><div class="question-head"><span class="question-number">${String((num-1)*3+i+1).padStart(2,'0')}</span><h3>${safeText(q.title)}</h3></div><p>${safeText(q.prompt)}</p><label class="form-label" for="${q.id}">Your investigation notes</label><textarea id="${q.id}" name="${q.id}" placeholder="${safeText(q.placeholder)}" spellcheck="true">${safeText(data.answers[q.id] || '')}</textarea><div class="question-foot" id="count-${q.id}">${String(data.answers[q.id]||'').trim().length} characters · Cite evidence IDs</div></section>`).join('')}
+      <div class="section-actions"><button type="button" class="secondary" data-route="${num===1?'evidence':CASE.stages[num-2].id}">← ${num===1?'Evidence locker':'Previous stage'}</button><button type="button" class="primary" data-route="${num===5?'report':CASE.stages[num].id}">${num===5?'Prepare report':'Next stage'} →</button></div>${progressHTML()}`;
+    stage.questions.forEach(q=>{
+      const t=document.getElementById(q.id);
+      t.addEventListener('input',()=>{
+        data.answers[q.id]=t.value;
+        document.getElementById(`count-${q.id}`).textContent=`${t.value.trim().length} characters · Cite evidence IDs`;
+        document.getElementById('stage-status').textContent=`${stage.questions.filter(answered).length} of ${stage.questions.length} responses entered`;
+        document.getElementById('progress-count').textContent=`${countDone()} of ${allQuestions.length} responses entered`;
+        document.getElementById('progress-fill').style.width=`${(countDone()/allQuestions.length)*100}%`;
+        store();renderNav();
+      });
+    });
+  }
+  function reportText() {
+    const lines=[`NORDIC RETAIL AS — STUDENT SECURITY INVESTIGATION`,`Case: NR-2026-014`,`Student: ${data.name.trim() || 'Not provided'}`,`Exported: ${new Date().toLocaleString()}`,`Responses with 20+ characters: ${countDone()} / ${allQuestions.length}`,``,`Note: All incident evidence is fictional. CVE-2021-44228 is a real vulnerability.`,`------------------------------------------------------------`,``];
+    CASE.stages.forEach((s,i)=>{
+      lines.push(`STAGE ${i+1}: ${s.label.toUpperCase()}`,``);
+      s.questions.forEach((q,j)=>{lines.push(`QUESTION ${i*3+j+1}: ${q.title}`,q.prompt,`RESPONSE:`,String(data.answers[q.id]||'[No response entered]'),``);});
+      lines.push('------------------------------------------------------------','');
+    });
+    return lines.join('\n');
+  }
+  function exportReport() {
+    const blob = new Blob([reportText()],{type:'text/plain;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url;a.download='Nordic-Retail-Investigation-Report.txt';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  function renderReport() {
+    const n=countDone();
+    container.innerHTML=`<div class="headline-row"><span class="overline">CASE FILE · SUBMISSION</span><span class="pill">${n}/${allQuestions.length} responses</span></div><h1 class="hero-title">Final report</h1><p class="lead">Your responses are assembled into one report. Check that you have cited evidence IDs, distinguished facts from assumptions and explained the reasoning behind your recommendations.</p><div class="card"><h2>Export your investigation</h2><div class="student-box"><label class="form-label" for="student-name">Your name (for the report)</label><input type="text" id="student-name" class="text-input" maxlength="120" autocomplete="name" placeholder="Enter your full name" value="${safeText(data.name)}"></div>${progressHTML()}<div class="button-row"><button class="primary" type="button" id="btn-export-report">Download report (.txt) ↓</button><button class="secondary" type="button" id="btn-print-report">Print report / Save as PDF</button></div></div><div class="card"><h2>Submission checklist</h2><ul class="list-clean"><li>Have I answered all 15 questions with enough detail?</li><li>Did I cite specific evidence IDs in my conclusions?</li><li>Did I distinguish confirmed events from suspicious but unproven activity?</li><li>Did I explain why my recommendations are a priority?</li><li>Have I exported my report for submission?</li></ul></div><div class="card"><h2>Report preview</h2><div class="preview-report" id="report-preview"></div></div><p class="footer-note">Export creates a plain-text file on your device; no answers are sent to any server. Your instructor will explain where to submit it.</p>`;
+    const name=document.getElementById('student-name');
+    name.addEventListener('input',()=>{data.name=name.value;store();updatePreview();});
+    function updatePreview(){document.getElementById('report-preview').textContent=reportText();}
+    updatePreview();
+    document.getElementById('btn-export-report').addEventListener('click',exportReport);
+    document.getElementById('btn-print-report').addEventListener('click',()=>{
+      // Use a printable text-only window so the navigation and modal do not appear.
+      const win=window.open('','_blank');
+      if (!win) { alert('Pop-up blocked. Download the report and print it from a text editor.');return; }
+      const report=reportText();
+      win.document.open();win.document.write('<!doctype html><html><head><title>Nordic Retail Investigation</title><style>body{font:13px/1.6 Arial,sans-serif;margin:32px;color:#17253a}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 Arial,sans-serif}</style></head><body><pre>'+safeText(report)+'</pre></body></html>');win.document.close();win.focus();win.print();
+    });
+  }
+  function render() {
+    let route=getRoute();
+    renderNav();
+    if (route==='briefing') briefing();
+    else if(route==='evidence')renderEvidence();
+    else if(route==='report')renderReport();
+    else renderStage(CASE.stages.find(s=>s.id===route));
+    container.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.route)));
+    attachEvidence(container);
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+  document.getElementById('modal-close').addEventListener('click',closeEvidence);
+  document.getElementById('modal-done').addEventListener('click',closeEvidence);
+  modal.addEventListener('click',e=>{if(e.target===modal)closeEvidence();});
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')closeEvidence();
+    if(e.key==='Tab'&&!modal.hidden){
+      const focusables=[...modal.querySelectorAll('button,a[href]')];
+      const first=focusables[0],last=focusables[focusables.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  });
+  document.getElementById('btn-export-top').addEventListener('click',exportReport);
+  document.getElementById('btn-reset').addEventListener('click',()=>{
+    if(confirm('Clear all saved notes and your name for this case on this browser? This cannot be undone.')) {
+      data={name:'',answers:{}};store();render();
+    }
+  });
+  window.addEventListener('hashchange',render);
+  renderRail();render();
+  if (!storageAvailable) document.getElementById('saved-status').textContent='Auto-save unavailable — export often';
+})();
+
+</script>
+</body>
+</html>
