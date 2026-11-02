@@ -81,7 +81,7 @@ html{color-scheme:light}body{background:#FAFAF8;color:#1A1A19;font-family:Inter,
 </section>
 </div>
 <div class="navigation"><div class="buttons"><button class="btn" id="back" type="button">← Previous</button><button class="btn primary" id="next" type="button">Next step →</button></div><span id="navHint" class="small"></span><button class="btn" id="reset" type="button">↺ Restart</button></div>
-<section class="extra card">
+<details class="extra-disclosure"><summary>HTTP comparison and model limitations</summary><section class="extra card">
 <div class="extra-head"><div><h2>What if the website used HTTP instead?</h2><p>Compare the network observer's view with and without TLS.</p></div><button type="button" id="compare" class="btn" aria-expanded="false">Show HTTP comparison</button></div>
 <div id="contrast" class="contrast">
 <div class="compare-panel"><h3>🔓 Plain HTTP</h3><p>No TLS handshake and no built-in transport encryption. A network observer can read or alter the HTTP request in transit.</p><code>GET /checkout?item=book HTTP/1.1
@@ -90,7 +90,7 @@ Host: shop.example</code></div>
 [encrypted, authenticated bytes]</code></div>
 </div>
 <p class="mini-note"><strong>Model limitations:</strong> This is an educational visualisation, not a real TLS connection or cryptographic implementation. It models a standard certificate-authenticated TLS 1.3 handshake without 0-RTT, client certificates, or session resumption. In real use, DNS queries, IP addresses, packet sizes and timing may expose metadata; SNI in a typical ClientHello is visible unless protections such as ECH apply. The sample certificate and domains are fictional.</p>
-</section>
+</section></details>
 <footer>Information Security (IIS) · Module 2 · Created by Zeeshan Basit · <a href="https://www.rfc-editor.org/rfc/rfc8446" target="_blank" rel="noopener noreferrer">TLS 1.3 standard (RFC 8446) ↗</a></footer>
 </main>
 <script>
@@ -206,5 +206,29 @@ byId("compare").addEventListener("click",function(){contrast=!contrast;render()}
 render()
 })();
 </script>
-</body>
+<style id="tls-presentation-space">
+@media(min-width:1250px) and (min-height:680px){
+ .shell{max-width:1500px;padding:9px 16px}
+ .hero{margin-bottom:6px;gap:10px}.hero h1{font-size:28px;margin:2px 0}.hero p{max-width:none;line-height:1.3}
+ .hero-tag{padding:6px 10px}
+ .picker{padding:8px 10px;margin-bottom:6px}.picker-head{margin-bottom:5px}
+ .scenario-row{gap:5px}.scenario{padding:5px 9px}
+ .statusline{margin-bottom:6px}.pill{padding:3px 8px}
+ .steps{margin-bottom:7px;gap:5px}.step{min-height:46px;padding:3px;gap:1px}.step b{width:19px;height:19px}
+ .main-grid{gap:9px}.visual,.details{padding:10px}
+ .section-heading{margin-bottom:5px}
+ .address{padding:6px 9px;margin-bottom:7px}
+ .diagram{min-height:105px;gap:6px}.endpoint{min-height:100px;padding:6px;gap:2px}
+ .endpoint .avatar{width:38px;height:38px;font-size:20px}.wire{height:95px;gap:5px}
+ .packet,.spy{margin-top:7px;padding:7px}.code{line-height:1.3;margin-top:2px}
+ .security-cards{margin-top:7px;gap:6px}.security-card{padding:6px;min-height:0}.security-card p{margin:3px 0 0}
+ .details h2{margin:3px 0 5px}.details>p{margin-bottom:5px;line-height:1.35}
+ .callout{padding:7px;margin:6px 0}.quiz{margin-top:7px;padding-top:7px}.quiz p{margin-bottom:5px}.choices{gap:4px}.choice{padding:6px 8px}
+ .cert{margin-top:6px}.cert td{padding:4px 7px}
+ .navigation{margin-top:6px}.btn{padding:6px 10px}
+ .extra-disclosure{margin-top:6px}.extra{margin-top:4px;padding:10px}
+ footer{padding:6px}
+}
+.extra-disclosure>summary{cursor:pointer;color:var(--dark);font-weight:700}
+</style></body>
 </html>
