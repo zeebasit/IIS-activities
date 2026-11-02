@@ -249,5 +249,15 @@ render()
  .visual .diagram{min-height:90px}.visual .wire{height:85px}
  .navigation .btn{padding:4px 9px}.navigation{margin-top:3px}
 }
+</style><style id="tls-details-fit">
+@media(min-width:1250px) and (min-height:620px){
+ .main-grid{grid-template-columns:minmax(420px,.45fr) minmax(0,.55fr)}
+ .details{display:grid;grid-template-columns:1fr 1fr;gap:0 9px;align-content:start}
+ .details>#stageCount,.details>#stepTitle,.details>#stepExplanation,.details>#insight{grid-column:1 / -1}
+ .details>#certViewer:not([hidden]){grid-column:1}
+ .details>#quizArea:not([hidden]){grid-column:1 / -1}
+ .details:has(#certViewer:not([hidden]))>#quizArea:not([hidden]){grid-column:2}
+ .quiz{margin-top:6px;padding-top:6px}
+}
 </style></body>
 </html>
