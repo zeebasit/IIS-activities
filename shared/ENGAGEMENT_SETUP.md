@@ -2,7 +2,7 @@
 
 ## Current status
 
-The Umami Cloud website is configured in the EU region. Collection is **intentionally disabled** in `shared/engagement.js` pending institutional privacy approval.
+The Umami Cloud website is configured in the EU region. The shared tracker is enabled for IIS and NET activity pages on `zeebasit.github.io`.
 
 Both repositories are deployed under `zeebasit.github.io`, so one Umami website can track the NET and IIS paths.
 
@@ -23,15 +23,13 @@ No learner names, answers, quiz scores, student IDs or custom unique identifiers
 
 ## Institutional privacy requirements
 
-Before activation, confirm the analytics provider and proposed usage with Noroff's privacy/security contact. Review the provider's data-processing agreement, retention, regional processing, student notices and whether consent or another lawful basis is required under Norwegian privacy rules. **Do not activate tracking before this review.** A cookie-free tracker is not automatically exempt from every privacy requirement.
+The site operator is responsible for applicable institutional policies and privacy requirements, including the provider’s data processing terms, retention, regional processing, student notices, and any required consent controls.
 
-## Activate after approval
+## Verify collection
 
-1. Review the configured [Umami website](https://cloud.umami.is/analytics/eu/websites/3477cf4c-a222-4bee-9deb-e7bd5b7c0a69) with Noroff’s privacy contact.
-2. Implement any consent controls required by the approval before the tracker loads.
-3. After approval and any required consent controls are in place, set `ENABLED=true` in `shared/engagement.js`. The public website ID and script URL are already configured.
-4. Once GitHub Pages has deployed, open the Nordic Retail investigation and Module 2 quiz in a browser, interact and complete them, then check pageviews and the `activity-start`/`activity-complete` events in Umami.
-5. Filter by URL path for per-activity statistics: `/IIS-activities/...` or `/net-interactive-activities/...`. Use the `course` and `activity` event properties for grouping.
+1. Open the Nordic Retail investigation or Module 2 Security Evidence Quiz. Interact and complete the activity, then check the pageview and the `activity-start` and `activity-complete` events in Umami.
+2. Filter by URL path for per-activity statistics. Use the `NET` or `IIS` tag to separate courses, or use the `course` and `activity` event properties for grouping.
+3. To pause collection, set `ENABLED=false` in `shared/engagement.js` and let GitHub Pages redeploy.
 
 Hosted Umami's free Hobby plan currently offers one website, so both repositories are deliberately covered under one hostname. This plan's features and limits can change.
 
