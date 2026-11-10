@@ -352,6 +352,86 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
 /* Hide the tablet panel switch while the progress summary is open. */
 .mobile-tabs[hidden]{display:none!important}
 
+
+/* Spacious reading mode for ordinary classroom desktop displays. */
+@media (min-width:1151px) and (min-height:800px){
+  .shell{padding:12px 19px 9px;gap:11px}
+  .eyebrow{font-size:13px}
+  h1{font-size:29px;margin:3px 0 1px}
+  .tag{font-size:14px;padding:7px 13px}
+  .scorebar{min-height:46px;padding:9px 15px}
+  .scorebar .numbers{font-size:16px;gap:26px}
+  .sections{gap:14px}
+  .section{min-height:61px;padding:12px 15px;gap:12px;border-radius:12px}
+  .section .section-code{font-size:16px;padding:6px 9px}
+  .section b{font-size:15px}
+  .section small{font-size:13px}
+  #quizView{gap:10px}
+  .layout{gap:17px}
+  .evidence,.decision{padding:22px 25px}
+  .block-head{margin-bottom:14px}
+  .block-head h2{font-size:20px}
+  .eyebrow2,.counter{font-size:14px}
+  h3{font-size:28px;line-height:1.25;margin:2px 0 17px}
+  .evidence-intro{font-size:20px;line-height:1.48;margin-bottom:19px}
+  .file-top{padding:13px 16px}
+  .file-top strong{font-size:18px}
+  .file-top span{font-size:13px}
+  .file-content{padding:12px 14px}
+  .file table,.file th,.file td{font-size:18px}
+  .file th{font-size:16px}
+  .file th,.file td{padding:11px 13px;line-height:1.46}
+  pre.log{font-size:17px;line-height:1.8;padding:20px}
+  .question-text{font-size:22px;line-height:1.45;margin-bottom:19px}
+  .choices{gap:13px}
+  .choice{font-size:20px;line-height:1.43;min-height:61px;padding:12px 16px;gap:15px;border-radius:12px}
+  .bubble{min-width:32px;height:32px;font-size:17px}
+  .choice .indicator{font-size:21px}
+  .buttons{margin-top:18px;gap:10px}
+  .btn{font-size:16px;padding:11px 16px}
+  #hintbox{font-size:16px;padding:12px 15px;margin-top:12px}
+  .resultbox{margin-top:12px;padding:13px 16px}
+  .resultbox strong{font-size:18px}
+  .resultbox p{font-size:16px;line-height:1.43;margin-top:7px}
+  .resultbox .details-btn{font-size:15px;padding:9px 12px;margin-top:9px}
+  .footer-nav{gap:10px}
+  .question-dots{gap:6px}
+  .dot{min-width:32px;height:32px;font-size:13px}
+  footer{font-size:12px;padding-top:2px}
+  .summary h2{font-size:26px}
+  .summary p{font-size:16px}
+  .summary-score{font-size:44px}
+  .summary-tile b{font-size:18px}
+  .summary-tile span{font-size:14px}
+  .review{font-size:14px;min-height:58px}
+  .review small{font-size:12px}
+}
+/* Moderately tall windows keep the generous typography without cutting off feedback. */
+@media (min-width:1151px) and (min-height:800px) and (max-height:915px){
+  .shell{padding:8px 14px 5px;gap:8px}
+  .scorebar{min-height:40px;padding:7px 12px}
+  .section{min-height:52px;padding:9px 12px}
+  .sections{gap:11px}
+  .layout{gap:13px}
+  .evidence,.decision{padding:17px 20px}
+  .block-head{margin-bottom:10px}
+  h3{margin:2px 0 12px;font-size:26px}
+  .evidence-intro{font-size:19px;margin-bottom:14px}
+  .file-top{padding:10px 13px}
+  .file-content{padding:9px 12px}
+  .file th,.file td{padding:8px 10px}
+  pre.log{font-size:16px;line-height:1.72;padding:15px}
+  .question-text{font-size:21px;margin-bottom:14px}
+  .choices{gap:10px}
+  .choice{min-height:57px;padding:10px 13px;font-size:19px}
+  .buttons{margin-top:13px}
+  .btn{padding:9px 14px}
+  .resultbox{padding:10px 13px;margin-top:9px}
+  .resultbox p{font-size:15px;line-height:1.4}
+  .resultbox .details-btn{font-size:14px;padding:7px 10px;margin-top:7px}
+  .dot{min-width:29px;height:29px}
+}
+
 </style></head><body>
 <main class="shell">
 <header class="topline">
