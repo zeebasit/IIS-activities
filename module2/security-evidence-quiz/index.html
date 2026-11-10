@@ -200,7 +200,7 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
  .btn{padding:5px 9px}
  .dot{height:22px;min-width:22px}
 }
-@media(max-width:900px){
+@media(max-width:1150px){
  .shell{padding:7px 10px 4px;gap:5px}
  h1{font-size:18px}
  .topmeta{display:none}
@@ -239,6 +239,99 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
  .review-list{grid-template-columns:repeat(2,minmax(0,1fr))}
  .file table{font-size:11px}
  .file th,.file td{font-size:11px;padding:5px}
+}
+
+
+/* Readable, viewport-aware type scale (desktop) */
+@media (min-width:1151px) and (min-height:760px){
+  .shell{padding:11px 17px 8px;gap:9px}
+  .eyebrow{font-size:12px;letter-spacing:.07em}
+  h1{font-size:26px;margin:3px 0 1px}
+  .topmeta{gap:7px}
+  .tag{font-size:13px;padding:7px 12px}
+  .scorebar{min-height:43px;padding:9px 14px;border-radius:11px}
+  .scorebar .numbers{font-size:15px;gap:24px}
+  .track{height:9px}
+  .sections{gap:9px}
+  .section{min-height:54px;padding:9px 13px;gap:10px;border-radius:11px}
+  .section .section-code{font-size:15px;padding:6px 9px}
+  .section b{font-size:14px}
+  .section small{font-size:12px}
+  #quizView{gap:9px}
+  .layout{gap:13px}
+  .evidence,.decision{padding:19px 21px}
+  .block-head{margin-bottom:12px}
+  .block-head h2{font-size:18px}
+  .eyebrow2,.counter{font-size:13px}
+  h3{font-size:24px;line-height:1.24;margin:1px 0 13px}
+  .evidence-intro{font-size:17px;line-height:1.48;margin-bottom:17px}
+  .file{border-radius:13px}
+  .file-top{padding:11px 14px}
+  .file-top strong{font-size:16px}
+  .file-top span{font-size:12px}
+  .file-content{padding:11px 13px}
+  .file table{font-size:16px}
+  .file th,.file td{font-size:15.5px;padding:11px 12px;line-height:1.42}
+  .file th{font-size:14px}
+  pre.log{font-size:15px;line-height:1.75;padding:16px}
+  .question-text{font-size:19px;line-height:1.43;margin-bottom:18px}
+  .choices{gap:11px}
+  .choice{font-size:17px;line-height:1.43;min-height:57px;padding:13px 14px;gap:14px;border-radius:11px}
+  .bubble{min-width:29px;height:29px;font-size:15px;border-radius:8px}
+  .choice .indicator{font-size:19px}
+  .buttons{margin-top:16px;gap:9px}
+  .btn{font-size:15px;padding:10px 15px;border-radius:10px}
+  #hintbox{font-size:15px;padding:12px 14px;margin-top:12px}
+  .resultbox{padding:14px 16px;margin-top:14px}
+  .resultbox strong{font-size:17px}
+  .resultbox p{font-size:15px;line-height:1.45;margin-top:8px}
+  .resultbox .details-btn{font-size:14px;padding:8px 12px;margin-top:11px}
+  .footer-nav{gap:9px}
+  .question-dots{gap:5px}
+  .dot{min-width:31px;height:31px;font-size:13px;border-radius:7px}
+  footer{font-size:12px;padding:2px 0 0}
+  .summary{padding:20px}
+  .summary h2{font-size:24px}
+  .summary p{font-size:15px}
+  .summary-score{font-size:43px}
+  .summary-grid{gap:11px;margin:14px 0}
+  .summary-tile{padding:13px}
+  .summary-tile b{font-size:17px}
+  .summary-tile span{font-size:13px}
+  .summary h3{font-size:19px}
+  .review-list{gap:8px;margin:9px 0 14px}
+  .review{font-size:14px;min-height:56px;padding:10px 13px}
+  .review small{font-size:12px}
+}
+/* Shorter desktop screens: enlarge core reading text without compromising the fit. */
+@media (min-width:1151px) and (max-height:759px){
+  .block-head h2{font-size:16px}
+  h3{font-size:20px}
+  .evidence-intro{font-size:14px;line-height:1.42}
+  .file-top strong{font-size:14px}
+  .file table,.file th,.file td{font-size:13px;line-height:1.33}
+  .file th,.file td{padding:6px 8px}
+  pre.log{font-size:12.5px;line-height:1.6}
+  .question-text{font-size:16px}
+  .choice{font-size:14px;min-height:42px;padding:8px 10px}
+  .bubble{min-width:24px;height:24px;font-size:12px}
+  .btn{font-size:13px}
+  .resultbox p{font-size:13px}
+}
+/* The single-panel tablet layout avoids side-by-side text being squeezed. */
+@media (min-width:621px) and (max-width:1150px){
+  .block-head h2{font-size:16px}
+  h3{font-size:21px}
+  .evidence-intro{font-size:16px;line-height:1.45}
+  .file-top strong{font-size:15px}
+  .file table,.file th,.file td{font-size:14px}
+  .file th,.file td{padding:8px 10px}
+  pre.log{font-size:13px;line-height:1.65}
+  .question-text{font-size:18px}
+  .choice{font-size:16px;min-height:48px;padding:10px 12px}
+  .bubble{min-width:25px;height:25px;font-size:13px}
+  .btn{font-size:14px}
+  .resultbox p{font-size:14px}
 }
 
 </style></head><body>
