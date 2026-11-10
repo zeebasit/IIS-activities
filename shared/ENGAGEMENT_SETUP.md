@@ -2,7 +2,7 @@
 
 ## Current status
 
-The activity engagement integration has been **installed but is intentionally disabled**. No third-party analytics requests or student engagement events are transmitted until an approved Umami website ID is inserted into `shared/engagement.js`.
+The Umami Cloud website is configured in the EU region. Collection is **intentionally disabled** in `shared/engagement.js` pending institutional privacy approval.
 
 Both repositories are deployed under `zeebasit.github.io`, so one Umami website can track the NET and IIS paths.
 
@@ -27,9 +27,9 @@ Before activation, confirm the analytics provider and proposed usage with Noroff
 
 ## Activate after approval
 
-1. Create an Umami Cloud account (an EU data region may be appropriate if approved).
-2. Add a website for `zeebasit.github.io`. Obtain its public *Website ID* from the tracker snippet. Do not commit an API token or password to GitHub.
-3. Update only `shared/engagement.js` and set `WEBSITE_ID` to the approved public Website ID. The script URL is already set to `https://cloud.umami.is/script.js`.
+1. Review the configured [Umami website](https://cloud.umami.is/analytics/eu/websites/3477cf4c-a222-4bee-9deb-e7bd5b7c0a69) with Noroff’s privacy contact.
+2. Implement any consent controls required by the approval before the tracker loads.
+3. After approval and any required consent controls are in place, set `ENABLED=true` in `shared/engagement.js`. The public website ID and script URL are already configured.
 4. Once GitHub Pages has deployed, open the Nordic Retail investigation and Module 2 quiz in a browser, interact and complete them, then check pageviews and the `activity-start`/`activity-complete` events in Umami.
 5. Filter by URL path for per-activity statistics: `/IIS-activities/...` or `/net-interactive-activities/...`. Use the `course` and `activity` event properties for grouping.
 
@@ -66,4 +66,4 @@ The main lecturer hub auto-discovers newly created `index.html` activity pages, 
 - Click-based starts ≠ meaningful completion.
 - A report of complete interaction rates requires an explicit finish condition for each activity.
 - Browser content blockers and failed network requests can cause undercounting.
-- The free hosted Umami plan provides its own analytics dashboard. The lecturer hub does not yet display live totals because embedded private reporting requires an authenticated API or an explicitly shared report.
+- The lecturer hub links to the signed-in Umami dashboard. With the free Hobby plan, view pageviews and custom events there and use the `NET` or `IIS` tag to separate the courses.
