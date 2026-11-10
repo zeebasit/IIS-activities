@@ -108,6 +108,139 @@ footer{font-size:12px;color:var(--muted);padding:17px 0 11px;display:flex;justif
 @media(max-width:1020px){.layout{grid-template-columns:1fr}.evidence,.decision{min-height:0}.sections{grid-template-columns:repeat(2,minmax(0,1fr))}.scorebar{gap:11px}}
 @media(max-width:620px){.shell{padding:15px 12px}.sections{gap:6px}.section{padding:8px 6px;gap:5px}.section b{font-size:10px}.section .section-code{font-size:11px}.topmeta{justify-content:flex-start}.track{display:none}.evidence,.decision{padding:14px}.file-content{padding:9px}.file th,.file td{padding:8px 5px;font-size:11px}.file .keyval td:first-child{min-width:0;width:37%}.summary-grid,.review-list{grid-template-columns:1fr 1fr}.scorebar{align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Viewport-fit layout: keeps the question and evidence visible together on desktops. */
+html,body{height:100%;overflow:hidden}
+.shell{max-width:none;width:100%;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:9px 15px 6px}
+.topline{margin:0;flex:0 0 auto;gap:10px;align-items:center}
+.eyebrow{font-size:10px}
+h1{font-size:21px;line-height:1.1;margin:2px 0 0}
+.lead{display:none}
+.topmeta{padding:0;gap:5px}
+.tag{padding:5px 9px;font-size:11px}
+.scorebar{flex:0 0 auto;margin:0;padding:6px 11px;border-radius:9px;min-height:32px}
+.scorebar .numbers{gap:15px;font-size:12px}
+.track{height:7px}
+.sections{flex:0 0 auto;margin:0;gap:6px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.section{padding:5px 8px;gap:7px;border-radius:9px;min-height:38px}
+.section .section-code{padding:4px 5px;font-size:11px}
+.section b{font-size:11px}
+.section small{font-size:10px}
+#quizView{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.layout{flex:1;min-height:0;gap:9px;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr)}
+.evidence,.decision{min-height:0;padding:12px;overflow:hidden;display:flex;flex-direction:column}
+.block-head{margin:0 0 6px;gap:6px}
+.block-head h2{font-size:13px}
+.eyebrow2,.counter{font-size:10px}
+h3{font-size:17px;line-height:1.2;margin:0 0 7px}
+.evidence-intro{font-size:12px;line-height:1.35;margin:0 0 9px}
+.file{min-height:0}
+.file-top{padding:6px 9px}
+.file-top strong{font-size:12px}
+.file-top span{font-size:10px}
+.file-content{padding:6px 8px}
+.file table{font-size:11px}
+.file th,.file td{padding:5px 6px;line-height:1.31}
+.file th{font-size:10px}
+.file .keyval td:first-child{min-width:0}
+pre.log{padding:9px;font-size:11px;line-height:1.5}
+.evidence-foot{display:none}
+.question-text{font-size:14px;line-height:1.36;margin:0 0 8px}
+.choices{gap:5px}
+.choice{padding:7px 9px;gap:8px;min-height:38px;font-size:12.5px;line-height:1.35;border-radius:9px;align-items:center}
+.bubble{min-width:21px;height:21px;font-size:11px}
+.helper{display:none}
+.buttons{margin-top:8px;gap:6px}
+.btn{font-size:12px;padding:7px 10px}
+#hintbox{margin-top:7px;padding:8px 10px;font-size:12px}
+.resultbox{margin-top:7px;padding:9px 11px}
+.resultbox strong{font-size:13px}
+.resultbox p{font-size:12px;line-height:1.36;margin:4px 0 0}
+.resultbox .details-btn{padding:4px 8px;margin-top:7px;font-size:11px}
+.reason-list{display:none}
+.footer-nav{flex:0 0 auto;padding:0;gap:6px}
+.question-dots{gap:3px}
+.dot{min-width:23px;height:23px;font-size:10px;border-radius:6px}
+.tools{gap:5px}
+footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
+.summary{flex:1;min-height:0;overflow:hidden;padding:14px;margin:0}
+.summary h2{font-size:19px;margin:0 0 4px}
+.summary p{font-size:12px;line-height:1.33;margin:5px 0}
+.summary-score{font-size:31px}
+.summary-grid{gap:7px;margin:9px 0}
+.summary-tile{padding:8px}
+.summary-tile b{font-size:13px}
+.summary-tile span{font-size:11px}
+.summary h3{font-size:15px;margin:5px 0}
+.review-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:5px 0 9px}
+.review{padding:6px 8px;min-height:44px;font-size:11px;line-height:1.2}
+.review small{font-size:10px}
+.mobile-tabs,.mobile-next{display:none}
+.overlay[hidden]{display:none!important}
+.overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:17px;background:rgba(30,24,23,.5)}
+.modal{background:white;border-radius:14px;border:1px solid var(--line);width:min(760px,100%);max-height:calc(100dvh - 34px);overflow:auto;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.19)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.modal-head h2{margin:0;font-size:18px}
+.modal-reasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.modal-reason{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#faf9f7;font-size:13px;line-height:1.4}
+.modal-reason strong{display:block;font-size:12px;margin-bottom:5px}
+.modal-reason.correct{background:var(--successbg);border-color:#a6cdb4}
+.modal-reason.wrong{background:var(--dangerbg);border-color:#e8b6ad}
+@media(max-height:740px) and (min-width:901px){
+ .shell{gap:4px;padding:6px 12px 4px}
+ h1{font-size:19px}
+ .tag{padding:3px 7px;font-size:10px}
+ .section{min-height:34px;padding:3px 7px}
+ .scorebar{min-height:28px;padding:4px 9px}
+ .evidence,.decision{padding:10px}
+ h3{font-size:16px}
+ .file th,.file td{padding:4px 5px}
+ .choice{min-height:34px;padding:5px 8px}
+ .question-text{font-size:13px}
+ .btn{padding:5px 9px}
+ .dot{height:22px;min-width:22px}
+}
+@media(max-width:900px){
+ .shell{padding:7px 10px 4px;gap:5px}
+ h1{font-size:18px}
+ .topmeta{display:none}
+ .sections{display:flex;overflow-x:auto;gap:4px;scrollbar-width:none;flex:0 0 auto}
+ .sections::-webkit-scrollbar{display:none}
+ .section{min-width:150px;flex:1 0 auto;height:34px;padding:4px 6px}
+ .section b{font-size:10px}
+ .section small{font-size:9px}
+ .mobile-tabs{display:flex;gap:6px;flex:0 0 auto}
+ .mobile-tabs button{flex:1;padding:5px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-size:12px;font-weight:750}
+ .mobile-tabs button[aria-selected="true"]{background:var(--soft);border-color:var(--primary);color:var(--strong)}
+ #quizView{flex:1;min-height:0}
+ .layout{display:block;position:relative;min-height:0;flex:1}
+ .evidence,.decision{height:100%;padding:11px;overflow:auto;overscroll-behavior:contain}
+ #quizView[data-view="evidence"] .decision{display:none}
+ #quizView[data-view="question"] .evidence{display:none}
+ .mobile-next{display:block;margin-top:auto;align-self:flex-end}
+ .choice{min-height:36px}
+ .question-dots{display:none}
+ .footer-nav{justify-content:space-between}
+ footer{font-size:10px}
+ .summary{overflow:auto}
+ .review-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+ .eyebrow{font-size:9px}
+ h1{font-size:17px}
+ .scorebar{padding:5px 8px}
+ .scorebar .numbers{font-size:11px;gap:10px}
+ .scorebar .track{display:none}
+ .footer-nav .btn{font-size:11px;padding:6px 7px}
+ .footer-nav .tools{gap:3px}
+ footer{padding:0;font-size:9px}
+ .modal-reasons{grid-template-columns:1fr}
+ .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .review-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .file table{font-size:11px}
+ .file th,.file td{font-size:11px;padding:5px}
+}
+
 </style></head><body>
 <main class="shell">
 <header class="topline">
@@ -120,13 +253,15 @@ footer{font-size:12px;color:var(--muted);padding:17px 0 11px;display:flex;justif
 </section>
 <nav id="sections" class="sections" aria-label="Lesson sections"></nav>
 <div id="summary" class="card summary hidden" aria-live="polite"></div>
-<div id="quizView">
+<nav class="mobile-tabs" id="mobileTabs" aria-label="Quiz panel"><button id="showEvidence" type="button" aria-selected="true">1 · Examine evidence</button><button id="showQuestion" type="button" aria-selected="false">2 · Answer question</button></nav>
+<div id="quizView" data-view="evidence">
 <div class="layout">
 <section class="card evidence" aria-label="Investigation evidence">
 <div class="block-head"><h2>Evidence file</h2><span class="eyebrow2" id="evidenceCode">IIS-M2</span></div>
 <h3 id="title"></h3><p class="evidence-intro" id="context"></p>
 <div class="file"><div class="file-top"><strong id="evidenceTitle"></strong><span>TRAINING SCENARIO</span></div><div class="file-content" id="evidenceBody"></div></div>
 <div class="evidence-foot"><span aria-hidden="true">ⓘ</span><span>All systems, incident records and identifiers are fictional. Use only the evidence presented; do not assume additional facts.</span></div>
+<button class="btn primary mobile-next" id="toQuestion" type="button">Continue to question →</button>
 </section>
 <section class="card decision" aria-label="Quiz question">
 <div class="block-head"><h2>Make your decision</h2><span class="counter" id="count">Question 1 of 16</span></div>
@@ -143,6 +278,7 @@ footer{font-size:12px;color:var(--muted);padding:17px 0 11px;display:flex;justif
 </div>
 <div class="footer-nav"><div class="tools"><button class="btn" id="prev" type="button">← Previous</button><button class="btn" id="next" type="button">Next →</button></div><div id="dots" class="question-dots" aria-label="Question navigation"></div><div class="tools"><button class="btn" id="review" type="button">View results</button><button class="btn" id="restart" type="button">↻ New shuffled attempt</button></div></div>
 </div>
+<div class="overlay" id="detailOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Why each option?</h2><button class="btn" id="closeOverlay" type="button">Close ✕</button></div><div class="modal-reasons" id="modalBody"></div></div></div>
 <footer><span>Created by Zeeshan Basit · IIS Module 2</span><span><a href="../../">Back to IIS activities</a> · Answers are saved on this device only</span></footer>
 </main>
 <script type="application/json" id="quizData">[{"id":"v1","section":"2.1","topic":"Vulnerabilities & threat intelligence","title":"Which system is most urgent?","evidenceTitle":"Weekly vulnerability exposure report","context":"The team can take only one system offline for an emergency patch. Compare technical severity with reachability, exploitation and business impact.","format":"table","columns":["Asset","CVSS","Exposure","Current evidence"],"rows":[["WEB-01","9.8","Public internet","Active exploitation; customer login"],["LAB-02","9.8","Isolated lab","No external access; no observed attempts"],["FILE-03","8.8","Internal network","Important departmental share"],["TEST-04","7.5","VPN only","No active exploitation reported"]],"ask":"Which asset is the strongest first priority based on this evidence?","choices":["WEB-01","LAB-02","FILE-03","TEST-04"],"correct":[0],"reason":"WEB-01 combines critical severity, direct internet reachability, observed exploitation and a sensitive customer service. A high CVSS score alone does not capture actual operational risk.","hint":"Look beyond the numerical severity score. Which exposure is already being exploited?","why":["Public reachability plus active exploitation raises immediate risk.","The lab has a high severity score, but is isolated and has no observed attacks.","The file server matters, but the evidence does not show the same immediate internet threat.","TEST-04 has restricted exposure and no observed exploitation."]},{"id":"v2","section":"2.1","topic":"Vulnerabilities & threat intelligence","title":"Read the vulnerability bulletin","evidenceTitle":"Vendor bulletin (fictional training record)","context":"A security analyst copied a vendor bulletin into the company's vulnerability tracker. The placeholder identifier is not a real assigned CVE.","format":"record","rows":[["Identifier","CVE-20XX-1234 (training placeholder)"],["CVSS base score","8.1 (High)"],["Vendor fixed version","Application 5.4.2"],["NVD status","Analysis not yet available"],["Installed version","Application 5.3.0"]],"ask":"Which statement is justified by the record?","choices":["The vendor offers a fixed version, and the installed version requires review.","An NVD analysis confirms that this system is being actively exploited.","A CVE identifier alone shows this host is reachable from the internet.","The CVSS base score guarantees that this is the company's most urgent issue."],"correct":[0],"reason":"The installed version is older than the fixed release, so the system should be assessed for the documented issue. The identifier tracks the vulnerability; CVSS expresses technical severity; NVD enrichment and local exposure are separate information.","hint":"Separate what the record actually states from assumptions about NVD, exploitation and priority.","why":["The installed version predates the published fix; checking applicability is warranted.","The record explicitly says NVD analysis is not available; it says nothing about active exploitation.","CVE identifiers describe vulnerabilities, not the exposure of an individual host.","A base score is not a complete business-risk ranking."]},{"id":"v3","section":"2.1","topic":"Vulnerabilities & threat intelligence","title":"Act on a threat advisory","evidenceTitle":"Security advisory and asset inventory","context":"A credible advisory warns about active attacks against internet-facing gateway software. Your team has the following systems.","format":"table","columns":["Asset","Version","Reachability","Notes"],"rows":[["GW-EDGE","3.1","Internet-facing","Version 3.1 affected; attacks observed"],["GW-LAB","3.1","Powered off","Test environment"],["GW-REMOTE","3.2","Internet-facing","Vendor lists version 3.2 as fixed"]],"ask":"What should the security team do first?","choices":["Prioritise patching or restricting GW-EDGE and review its logs.","Patch the powered-off lab before any internet-connected asset.","Assume GW-REMOTE is compromised because it is public.","Wait until every gateway can be patched at the same time."],"correct":[0],"reason":"GW-EDGE has the affected version, public exposure and an active-threat advisory. Reduce exposure, patch safely and check for indications of compromise.","hint":"Match the advisory's affected version with the system an attacker can currently reach.","why":["The exposed, affected gateway is the immediate concern.","The powered-off lab does not present the same current exposure.","The inventory says GW-REMOTE is on the fixed version; exposure alone does not prove compromise.","Deferring mitigation leaves the actively exposed gateway at risk."]},{"id":"v4","section":"2.1","topic":"Vulnerabilities & threat intelligence","title":"Harden without breaking the service","evidenceTitle":"Server configuration inventory","context":"The production server must continue receiving customer HTTPS connections while unnecessary attack paths are removed.","format":"record","rows":[["Business requirement","Public HTTPS service on TCP 443"],["Open TCP ports","21 (FTP), 23 (Telnet), 443 (HTTPS)"],["Accounts","Named admins + unused guest account"],["Patch status","Security updates 45 days behind"]],"ask":"Which change set best reduces attack surface while keeping the required service?","choices":["Disable unused FTP/Telnet, disable guest, apply tested updates and retain HTTPS.","Disable HTTPS and retain Telnet for administrators.","Leave all services running and change only the desktop background.","Keep the guest account and rely on the firewall to compensate."],"correct":[0],"reason":"Hardening means eliminating unnecessary services and accounts, applying updates, and preserving only required functionality. HTTPS on port 443 is a stated business requirement.","hint":"Which controls are not needed for the defined production workload?","why":["Removes avoidable attack surfaces without cutting off the required service.","Disabling the required HTTPS service would interrupt the application and leave Telnet exposed.","Cosmetic changes do not address exposed services, accounts or patches.","An unused account still adds exposure even when a firewall is present."]},{"id":"c1","section":"2.2","topic":"Cryptography & access control","title":"Investigate a file-integrity warning","evidenceTitle":"Software download verification","context":"An installer came from a mirror. The vendor separately published its SHA-256 digest on an authenticated website. These digests are shortened here for readability, but the local verification used complete values.","format":"record","rows":[["Vendor SHA-256 prefix","b73f9e21c5a8…"],["Downloaded file SHA-256 prefix","8a10d3e7f924…"],["Download source","Third-party mirror"],["Current status","Installer not yet executed"]],"ask":"What is the most defensible next action?","choices":["Stop installation, obtain a trusted copy and verify its digest.","Run the installer because SHA-256 is not encryption.","Rename the installer and try again.","Accept the file because the mirror served it over HTTPS."],"correct":[0],"reason":"Different complete SHA-256 digests show that the bytes differ. The correct response is not to execute an unverified installer; obtain a trustworthy copy and verify authenticity and integrity.","hint":"A cryptographic digest is useful when you compare it to an independently trusted expected value.","why":["A mismatch requires investigation before running software.","SHA-256 is hashing rather than encryption, but the mismatch still matters.","Renaming a file does not change or validate its contents.","HTTPS secures transport to the mirror; it does not prove the bytes match the vendor release."]},{"id":"c2","section":"2.2","topic":"Cryptography & access control","title":"Inspect an HTTPS connection","evidenceTitle":"Browser security details","context":"The browser has successfully authenticated a server and completed a TLS 1.3 handshake. The finance portal is now sending payroll data.","format":"record","rows":[["Protocol","TLS 1.3"],["Server identity","Certificate valid for finance.example"],["Key agreement","Ephemeral (EC)DHE"],["Application cipher","AES-128-GCM"],["Traffic type","Encrypted HTTP request"]],"ask":"Which mechanism protects the payroll content while it travels?","choices":["Authenticated symmetric encryption using the derived TLS traffic keys.","The server certificate's public key directly encrypting every HTTP packet.","SHA-256 hashing the entire payroll form without encryption.","An unencrypted HTTP connection after certificate validation."],"correct":[0],"reason":"TLS 1.3 derives application traffic keys after key agreement and authentication. AES-GCM provides authenticated symmetric encryption for HTTP data in transit.","hint":"The certificate establishes identity; the listed application cipher protects the data.","why":["AES-GCM with derived symmetric traffic keys protects both confidentiality and integrity.","Certificate verification authenticates the peer; the server public key is not used to encrypt every HTTP packet.","A hash alone does not conceal payroll content.","TLS application data is encrypted rather than sent as plaintext HTTP."]},{"id":"c3","section":"2.2","topic":"Cryptography & access control","title":"Interpret an access-control log","evidenceTitle":"Finance application audit trail","context":"An employee can successfully sign in, but the system does not allow access to a salary export. Review the sequence.","format":"log","rows":["08:42:11   AUTHN    employee.mira  password accepted","08:42:13   MFA      employee.mira  authenticator verified","08:42:14   LOGIN    employee.mira  session created","08:42:16   AUTHZ    /salary-export   DENY role=Sales","08:42:16   AUDIT    denied export recorded"],"ask":"Which AAA function stops the salary export?","choices":["Authentication","Authorisation","Accounting","Encryption"],"correct":[1],"reason":"Identity verification succeeded, but the user lacked permission for the export. That denial is an authorisation decision; the audit event is accounting.","hint":"Determine whether the system rejected the user's identity or the action they attempted.","why":["Authentication succeeded in the first three events.","Authorisation checks permissions after the identity is verified.","Accounting records the denied attempt but does not enforce the permission.","Encryption protects data, not role-based access decisions."]},{"id":"c4","section":"2.2","topic":"Cryptography & access control","title":"Evaluate multi-factor sign-in","evidenceTitle":"Authentication policy proposals","context":"The security team wants two factors from different categories, not simply two secrets a person memorises.","format":"record","rows":[["Policy A","Password + memorised four-digit PIN"],["Policy B","Password + hardware security key"],["Policy C","PIN + answer to security question"],["Policy D","Password + second, separate password"]],"ask":"Which proposal meets the stated multi-factor requirement?","choices":["Policy A","Policy B","Policy C","Policy D"],"correct":[1],"reason":"A password is something the user knows, while a hardware security key demonstrates possession of something the user has. Two knowledge factors do not constitute two different factor categories.","hint":"Classify each requested piece of evidence as knowledge, possession or inherence.","why":["Both inputs are knowledge factors.","Combines knowledge with possession.","Both a PIN and a security answer are knowledge factors.","Two passwords remain within the knowledge category."]},{"id":"m1","section":"2.3","topic":"Malware investigation","title":"Recognise self-propagation","evidenceTitle":"Endpoint outbreak timeline","context":"Several workstations were affected in quick succession. Staff report no attachments or software installations on the affected hosts during the incident.","format":"log","rows":["09:01   HOST-07  vulnerable service receives remote request","09:02   HOST-07  starts scanning neighbouring workstations","09:03   HOST-08  same new process appears without user action","09:04   HOST-09  same new process appears without user action","09:05   SOC      incident expands through internal subnet"],"ask":"Which malware behaviour best matches these observations?","choices":["Self-propagating worm","Document macro virus requiring user-opened files","Trojan installed individually by every user","Adware displaying unwanted browser advertisements"],"correct":[0],"reason":"The rapid, automatic spread through vulnerable network services without user action is characteristic of worm behaviour.","hint":"Focus on the mechanism used to reach each new host, not only the damage caused.","why":["The pattern is automatic propagation between systems.","No evidence shows file macros or users opening documents.","Users did not knowingly install a program on every infected host.","The evidence shows network propagation rather than unwanted adverts."]},{"id":"m2","section":"2.3","topic":"Malware investigation","title":"Investigate a deceptive installer","evidenceTitle":"Workstation incident report","context":"An employee downloaded a 'free PDF repair tool' from a third-party site. The application displayed a normal PDF interface while silently exporting browser credentials.","format":"record","rows":[["User action","Employee installed apparently useful tool"],["Visible behaviour","PDF window operates normally"],["Hidden behaviour","Credential-store access + outbound upload"],["Spread evidence","No automatic propagation observed"]],"ask":"Which classification best fits the initial delivery method?","choices":["Trojan horse","Network worm","Fileless cryptojacking only","Distributed denial-of-service attack"],"correct":[0],"reason":"A Trojan disguises malicious functionality inside software that appears legitimate, relying on the user to install or run it.","hint":"Look at how the malicious program persuaded someone to run it.","why":["The malicious behaviour was hidden behind apparently legitimate functionality.","There is no evidence of automatic propagation.","The behaviour targets credentials, not just covert CPU mining.","A DDoS would involve overwhelming a service with traffic, not stealing credentials via an installer."]},{"id":"m3","section":"2.3","topic":"Malware investigation","title":"Respond to suspected ransomware","evidenceTitle":"File server incident snapshot","context":"Staff cannot open shared files. Endpoint protection reports rapid encryption across a network share. A ransom note is displayed. A known-good offline backup is available.","format":"log","rows":["11:17   FILE-07  2,000 documents renamed/encrypted","11:18   EDR      mass file modification alert","11:19   FILE-07  demand-for-payment note created","11:20   BACKUP   offline snapshot verified from previous night"],"ask":"What is the strongest immediate incident-response choice?","choices":["Isolate the affected machine, preserve evidence, contain spread and plan trusted restoration.","Pay the demand immediately and resume normal operation.","Disable logging so encryption finishes faster.","Restore files onto the still-infected server without containment."],"correct":[0],"reason":"Containment limits further encryption, evidence supports investigation, and restoration should occur only once the affected environment is cleaned and secured.","hint":"First prevent additional impact; recovery comes after the environment is safe.","why":["Balances containment, investigation and safe recovery.","Payment does not guarantee recovery and does not address the compromise.","Turning off logs destroys useful evidence and does not contain the attack.","Restoring into an active compromise risks reinfection or re-encryption."]},{"id":"m4","section":"2.3","topic":"Malware investigation","title":"Decide which PowerShell alert matters","evidenceTitle":"Two endpoint security alerts","context":"PowerShell can be used for legitimate administration or misused by malware. The security team must decide what deserves investigation.","format":"table","columns":["Alert","Execution context","Network activity","Other evidence"],"rows":[["A","Signed deployment script from managed IT tool","Approved management server","Approved maintenance window"],["B","Unexpected script from temporary folder","Unknown external destination","Runs minutes after reported phishing click"]],"ask":"Which assessment is best supported?","choices":["Investigate alert B first; correlate its script, destination and timeline.","Declare every PowerShell process malicious.","Ignore alert B because PowerShell is a legitimate Windows tool.","Isolate all company devices solely because alert A used a script."],"correct":[0],"reason":"Suspicious context and correlated signals make alert B higher priority. A scripting tool is not automatically malicious; execution source, parent process, destination and timing matter.","hint":"Consider the surrounding evidence rather than deciding from the executable name alone.","why":["Alert B combines an unusual execution source, suspicious network connection and phishing timing.","PowerShell is frequently used legitimately for administration.","A legitimate tool can be abused; the surrounding activity warrants investigation.","Alert A matches an approved management workflow and provides less evidence of compromise."]},{"id":"a1","section":"2.4","topic":"Modern cyberattacks","title":"Explain unexplained CPU usage","evidenceTitle":"Workstation telemetry","context":"A staff computer has slowed down. Antivirus has not reported encrypted files, and there are no ransom notes.","format":"log","rows":["14:03   CPU          96% while user is idle","14:03   PROCESS      unknown-worker.exe uses most CPU","14:04   NETWORK      repeated mining-pool protocol connections","14:05   FILESYSTEM   documents open normally"],"ask":"Which threat hypothesis should be investigated first?","choices":["Cryptojacking","Ransomware encryption","Credential-stuffing attack","Website defacement"],"correct":[0],"reason":"Persistent high CPU and communication consistent with a mining pool point toward unauthorised cryptocurrency mining. It remains a hypothesis to confirm with process and network investigation.","hint":"Connect the resource consumption to the type of external service contacted.","why":["The CPU and mining-related network behaviour fit unauthorised crypto mining.","No file encryption or ransom behaviour is shown.","Credential stuffing concerns repeated authentication attempts, not CPU mining.","Website defacement concerns unauthorised modification of web pages."]},{"id":"a2","section":"2.4","topic":"Modern cyberattacks","title":"Inspect a suspicious sign-in request","evidenceTitle":"Email headers and link inspection","context":"An employee receives a message supposedly from the company IT team. The email is urgent and threatens account suspension.","format":"record","rows":[["Display name","NorthCo IT Helpdesk"],["From address","security@northco-login.example"],["Known support address","helpdesk@northco.example"],["Button destination","https://northco-login.example/verify"],["Message","'Your account will be disabled in 15 minutes. Enter your password now.'"]],"ask":"Which response is most appropriate?","choices":["Do not use the email link; verify through the known IT channel and report the message.","Click the link because the page uses HTTPS.","Reply with the password so support can validate the account.","Forward the email to coworkers and ask everyone to sign in."],"correct":[0],"reason":"The lookalike domain, urgent deadline and credential request are phishing indicators. Verify through an independently known route, not by following the suspect message.","hint":"Compare the sender and destination with the established support domain.","why":["Independent verification avoids trusting the suspicious link or sender.","HTTPS protects transport to a site but cannot establish that a lookalike site is legitimate.","Support should not require a password through email reply.","Circulating the link may expose additional users."]},{"id":"a3","section":"2.4","topic":"Modern cyberattacks","title":"Trace a compromised update","evidenceTitle":"Vendor incident bulletin","context":"Several unrelated customer organisations report the same malicious activity after receiving a legitimate-looking software update.","format":"log","rows":["Day 1   Vendor build pipeline access was compromised","Day 2   Attacker-modified package shipped as official update","Day 3   Customers downloaded update from vendor infrastructure","Day 4   Multiple customer networks report suspicious processes"],"ask":"Which attack path is best supported?","choices":["Software supply-chain compromise","Password spraying against customer logins","Direct DDoS against the customers","An individual user clicking an unrelated phishing link"],"correct":[0],"reason":"The malicious code arrived through a compromised trusted software supplier and its official distribution channel. This is a supply-chain attack.","hint":"Identify the trusted organisation or process that became the route into many customers.","why":["Compromise of the vendor's build/distribution system explains the common exposure.","No repeated password attempts are described.","No traffic flood or service exhaustion is described.","The common delivery channel is the vendor's update, not an unrelated individual click."]},{"id":"a4","section":"2.4","topic":"Modern cyberattacks","title":"Identify a targeted website compromise","evidenceTitle":"Browser incident correlation","context":"Employees from several engineering companies were affected after visiting the same professional association portal. The portal was legitimate but had been compromised.","format":"record","rows":[["Website","Trusted engineering-association portal"],["Malicious change","Injected script added by attacker"],["Victim pattern","Engineers visiting the site for industry updates"],["Observed outcome","Visitors' browsers redirected toward malicious content"],["Email delivery","No related phishing emails observed"]],"ask":"Which attack technique most closely matches this evidence?","choices":["Watering-hole attack","Traditional email phishing","Ransomware via direct file-share access","Password brute-force against the association"],"correct":[0],"reason":"Attackers compromised a website that the intended audience naturally visits, using that trusted destination to reach the targeted users. That is a watering-hole pattern.","hint":"Focus on where the attacker positioned the trap and why the victims would encounter it.","why":["A frequently visited legitimate portal was compromised to reach a particular community.","The evidence says delivery happened through the site, not phishing emails.","No direct file-share encryption or access path is indicated.","Repeated login guessing is not shown."]}]</script>
@@ -182,10 +318,27 @@ function progress(){
 var n=answered();$("progressText").textContent="Answered "+n+" / "+questions.length;$("scoreText").textContent="Score "+score()+" / 100";
 $("progressFill").style.width=(n/questions.length*100)+"%";$("progressTrack").setAttribute("aria-valuenow",String(n))
 }
+var currentView="evidence";
+function setView(view){
+ currentView=view==="question"?"question":"evidence";
+ $("quizView").setAttribute("data-view",currentView);
+ $("showEvidence").setAttribute("aria-selected",String(currentView==="evidence"));
+ $("showQuestion").setAttribute("aria-selected",String(currentView==="question"));
+}
+function showExplanation(q){
+ var selected=state.answers[q.id];
+ $("modalBody").innerHTML=q.choices.map(function(option,i){
+  var cl=i===q.correct[0]?" correct":i===selected?" wrong":"";
+  return '<div class="modal-reason'+cl+'"><strong>'+String.fromCharCode(65+i)+'. '+esc(option)+(i===q.correct[0]?' ✓':'')+'</strong>'+esc(q.why[i])+'</div>';
+ }).join("");
+ $("detailOverlay").hidden=false;
+ $("closeOverlay").focus();
+}
+function closeExplanation(){$("detailOverlay").hidden=true;$("explainChoices")?.focus()}
 function feedback(q){
 var a=state.answers[q.id],ok=a===q.correct[0],f=$("feedback");f.innerHTML="";
 if(a===undefined)return;
-f.innerHTML='<div class="resultbox'+(ok?'':' bad')+'"><strong>'+(ok?'✓ Correct analysis':'Not quite — review the evidence')+'</strong><p>'+esc(q.reason)+'</p><div class="reason-list">'+q.choices.map(function(x,i){return '<div class="reason-item"><b>'+(i===q.correct[0]?'✓ ':'')+String.fromCharCode(65+i)+'.</b> '+esc(q.why[i])+'</div>'}).join("")+'</div></div>'
+f.innerHTML='<div class="resultbox'+(ok?'':' bad')+'"><strong>'+(ok?'✓ Correct analysis':'Not quite — review the evidence')+'</strong><p>'+esc(q.reason)+'</p><button class="btn details-btn" id="explainChoices" type="button">Why each option?</button></div>';$("explainChoices").addEventListener("click",function(){showExplanation(q)})
 }
 function choiceButtons(q){
 var submitted=state.answers[q.id]!==undefined,chosen=submitted?state.answers[q.id]:state.chosen;
@@ -201,6 +354,8 @@ $("dots").querySelectorAll("[data-index]").forEach(function(el){el.addEventListe
 }
 function render(){
 sectionNav();progress();
+$("mobileTabs").hidden=state.summary;
+setView(currentView);
 $("summary").classList.toggle("hidden",!state.summary);
 $("quizView").classList.toggle("hidden",state.summary);
 if(state.summary){renderSummary();return}
@@ -214,7 +369,7 @@ $("prev").disabled=state.index===0;$("next").disabled=state.index===questions.le
 $("review").textContent=answered()===questions.length?"Final results":"View progress";
 save()
 }
-function navigate(ix){if(ix<0||ix>=questions.length)return;state.index=ix;state.chosen=null;state.showHint=false;state.summary=false;render();window.scrollTo({top:0,behavior:"smooth"})}
+function navigate(ix){if(ix<0||ix>=questions.length)return;state.index=ix;state.chosen=null;state.showHint=false;state.summary=false;currentView="evidence";render();window.scrollTo({top:0,behavior:"smooth"})}
 function renderSummary(){
 var n=answered(),correct=correctCount(),completed=n===questions.length;
 var tiles=Object.keys(sections).map(function(k){var set=questions.filter(function(q){return q.section===k}),a=set.filter(function(q){return state.answers[q.id]!==undefined}),ok=a.filter(good).length;return '<div class="summary-tile"><b>'+ok+' / '+a.length+' correct</b><span>Lesson '+esc(k)+' · '+esc(sections[k])+'</span></div>'}).join("");
@@ -230,6 +385,12 @@ state.order=KEYS.slice();
 for(var i=state.order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=state.order[i];state.order[i]=state.order[j];state.order[j]=tmp}
 state.index=0;state.answers={};state.chosen=null;state.showHint=false;state.summary=false;render();window.scrollTo({top:0,behavior:"smooth"})
 }
+$("showEvidence").addEventListener("click",function(){setView("evidence")});
+$("showQuestion").addEventListener("click",function(){setView("question")});
+$("toQuestion").addEventListener("click",function(){setView("question")});
+$("closeOverlay").addEventListener("click",closeExplanation);
+$("detailOverlay").addEventListener("click",function(e){if(e.target===$("detailOverlay"))closeExplanation()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("detailOverlay").hidden)closeExplanation()});
 $("submit").addEventListener("click",function(){var q=ordered(state.index);if(state.answers[q.id]!==undefined||state.chosen===null)return;state.answers[q.id]=state.chosen;state.chosen=null;state.showHint=false;state.summary=false;render()});
 $("hintBtn").addEventListener("click",function(){state.showHint=!state.showHint;render()});
 $("prev").addEventListener("click",function(){navigate(state.index-1)});
