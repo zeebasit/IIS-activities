@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light"><meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Lecturer's activity library for IIS and NET teaching resources.">
+<title>My Activity Library | Teaching Workspace</title>
+<style>
+:root{--paper:#FAFAF8;--ink:#1A1A19;--muted:#676560;--line:#E7E3DF;--pale:#FFF1EF;--blush:#FFABA6;--primary:#E12B21;--strong:#AA0D04;--sidebar:#242321;--sidebar2:#32312D;--white:#fff;--green:#27705A;--shadow:0 4px 20px rgba(55,32,27,.035)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #EA6B5E;outline-offset:3px}a{color:inherit;text-decoration:none}button:disabled{opacity:.55;cursor:default}
+.app{display:grid;grid-template-columns:257px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);color:white;display:flex;flex-direction:column;padding:27px 17px 17px;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:12px;padding:4px 7px 30px}
+.logo-symbol{width:44px;height:44px;flex:0 0 auto;border:1px solid #f7b2a9;background:#4b2d2a;border-radius:13px;display:grid;place-items:center;color:#ffc4bb;font-size:23px;font-weight:800;line-height:1}
+.logo small{display:block;color:#b1a6a1;text-transform:uppercase;font-weight:800;letter-spacing:.11em;font-size:10px}
+.logo strong{display:block;font-size:17px;letter-spacing:-.03em}
+.sidebar-label{padding:0 10px 10px;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:.15em;color:#99918a;margin-top:7px}
+.nav{display:grid;gap:5px;margin-bottom:27px}
+.nav-button{width:100%;border:1px solid transparent;border-radius:10px;padding:12px 10px;background:none;color:#d1ccc6;display:flex;align-items:center;gap:12px;text-align:left;font-weight:650}
+.nav-button:hover{background:#363430;color:#fff}
+.nav-button.selected{background:#4b302d;border-color:#78504b;color:white}
+.nav-icon{display:grid;place-items:center;width:24px;height:24px;font-size:16px}
+.nav-number{margin-left:auto;border-radius:999px;font-size:11px;color:#d5b5ac;background:#453a36;min-width:26px;padding:2px 7px;text-align:center}
+.nav-button.selected .nav-number{background:#75433d;color:#fff}
+.source{background:#302e2b;border:1px solid #46433f;border-radius:12px;padding:12px;margin:0 2px 10px;display:flex;align-items:center;gap:10px}
+.source .source-glyph{font-size:22px;flex:0 0 auto}
+.source strong{font-size:12px;display:block}.source small{font-size:10px;color:#aaa6a0;display:block;word-break:break-word}
+.source:hover{border-color:#ae817a}
+.side-bottom{margin-top:auto;border-top:1px solid #49423e;padding:17px 10px 3px;color:#a9a29c;font-size:11px}
+.side-bottom strong{display:block;font-size:12px;color:#e5dad4;margin-bottom:5px}
+.content{min-width:0;padding:26px clamp(18px,3.2vw,55px) 62px;max-width:1920px;width:100%;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:26px}
+.breadcrumb{color:#7e7770;font-size:12px;font-weight:700;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.breadcrumb .slash{color:#bcb3ab}.breadcrumb strong{color:var(--strong)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.small-button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 12px;display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#49423f;font-weight:800}
+.small-button:hover{border-color:#df9b93;background:#fffaf9}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.135em;color:var(--primary);text-transform:uppercase}
+.heading-line{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap}
+h1{font-size:clamp(2.1rem,3.25vw,3.25rem);letter-spacing:-.055em;line-height:1.1;margin:8px 0 11px;font-weight:820}
+.subtitle{color:var(--muted);max-width:780px;margin:0;line-height:1.65;font-size:14px}
+.status{border:1px solid var(--line);background:white;color:#56514e;font-size:12px;padding:9px 11px;border-radius:999px;display:flex;align-items:center;gap:7px;max-width:100%;font-weight:650}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#CDBEAF;flex:0 0 auto}
+.status.live .status-dot{background:#279669;box-shadow:0 0 0 3px #e0f4e9}
+.status.warn .status-dot{background:#e0ad44}
+.overview{display:grid;grid-template-columns:minmax(0,1.8fr) repeat(3,minmax(140px,.78fr));gap:12px;margin:28px 0 27px}
+.overview-lead{background:#332825;color:#fff;border:1px solid #55443e;border-radius:16px;padding:22px 23px;min-height:145px;position:relative;overflow:hidden}
+.overview-lead:after{content:"";position:absolute;right:-18px;top:-47px;width:185px;height:185px;border:35px solid rgba(255,171,166,.12);border-radius:50%}
+.overview-lead span{font-size:11px;text-transform:uppercase;font-weight:900;letter-spacing:.12em;color:#e8aba3;position:relative;z-index:1}
+.overview-lead strong{display:block;font-size:23px;line-height:1.22;letter-spacing:-.03em;margin:13px 0 8px;position:relative;z-index:1}
+.overview-lead p{margin:0;max-width:450px;color:#cbbcb7;font-size:12px;position:relative;z-index:1}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 18px;min-height:145px;display:flex;flex-direction:column;justify-content:space-between}
+.stat .stat-label{font-size:12px;color:var(--muted);font-weight:750}
+.stat .stat-value{font-size:41px;font-weight:850;letter-spacing:-.06em;line-height:1}
+.stat .stat-foot{font-size:11px;color:#8c817c}
+.toolbar{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.search{min-width:260px;flex:1;max-width:570px;border:1px solid var(--line);background:white;border-radius:11px;display:flex;align-items:center;gap:12px;padding:0 13px;min-height:47px;color:#817873}
+.search:focus-within{border-color:#e49386;box-shadow:0 0 0 3px #ffe9e5}
+.search input{width:100%;border:none;outline:none;font-size:14px;color:var(--ink);background:transparent;min-width:0}
+.search input::placeholder{color:#9a928d}
+.filter-side{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:9px;padding:9px 12px;color:#635b57;background:white;font-weight:750;font-size:12px}
+.chip[aria-pressed="true"]{background:var(--pale);border-color:#edaaa0;color:var(--strong)}
+.chip:hover{border-color:#e8a69b}
+.result-line{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;color:#837871;margin-bottom:14px}
+.result-line strong{color:#332d2b}
+.group{margin:28px 0 34px}
+.group-heading{display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.group-icon{width:37px;height:37px;border-radius:11px;display:grid;place-items:center;background:var(--pale);font-size:18px;color:var(--strong)}
+.group-header{min-width:0}
+.group-header h2{margin:0;font-size:18px;letter-spacing:-.025em}
+.group-header p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.group-count{margin-left:auto;font-size:11px;background:#f2ede9;color:#726760;padding:4px 8px;border-radius:999px;white-space:nowrap;font-weight:800}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.activity{background:white;border:1px solid var(--line);border-radius:14px;padding:17px 17px 14px;display:flex;flex-direction:column;min-height:219px;transition:border .15s ease,transform .15s ease,box-shadow .15s ease}
+.activity:hover{transform:translateY(-2px);border-color:#e7afa8;box-shadow:0 9px 21px rgba(55,32,27,.075)}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:14px}
+.type-label{display:flex;align-items:center;gap:7px;background:#f7f5f2;color:#5d534e;border-radius:7px;padding:5px 8px;font-size:10px;text-transform:uppercase;letter-spacing:.04em;font-weight:900}
+.type-label.archive{background:#f4f0ec;color:#847c74}
+.favorite{border:1px solid var(--line);border-radius:8px;background:#fff;color:#aca49d;font-size:18px;width:31px;height:31px;display:grid;place-items:center}
+.favorite[data-active="true"]{background:#fff4e2;color:#ba771f;border-color:#ecca91}
+.favorite:hover{color:#ac6424}
+.activity h3{font-size:16px;line-height:1.31;letter-spacing:-.025em;margin:0 0 8px}
+.activity p{font-size:12px;color:#6c6662;line-height:1.55;margin:0 0 14px;flex:1}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px}
+.badges span{font-size:10px;border:1px solid #f1e9e6;border-radius:6px;padding:3px 6px;color:#736c66}
+.card-actions{display:flex;gap:8px;align-items:center;border-top:1px solid #eeeae6;padding-top:12px}
+.launch{border:none;background:var(--primary);color:#fff;padding:9px 12px;border-radius:8px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;gap:7px}
+.launch:hover{background:var(--strong)}
+.code-link{font-size:11px;color:#8c7a72;text-decoration:underline;text-underline-offset:3px;padding:6px}
+.code-link:hover{color:var(--strong)}
+.card-number{margin-left:auto;color:#aa9b93;font-size:11px;font-weight:850}
+.empty{border:1px dashed #e3d1cc;background:#fffaf9;border-radius:15px;padding:45px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-size:19px;margin-bottom:6px}
+.empty p{margin:0}
+.recents{margin-top:28px;display:none}
+.recents.show{display:block}
+.recents h2{font-size:17px;letter-spacing:-.02em}
+.recent-items{display:flex;flex-wrap:wrap;gap:9px}
+.recent{background:#fff;border:1px solid var(--line);border-radius:10px;font-size:12px;padding:9px 12px;color:#5e5551;font-weight:700}
+.recent:hover{border-color:#ebaaa1;color:var(--strong)}
+.footer{border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;padding-top:20px;margin-top:35px;color:#827973;font-size:11px}
+.fallback{display:none}
+.fallback.show{display:block;margin-top:12px;color:#986e36;font-size:11px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(max-width:1490px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.overview{grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(120px,.7fr))}}
+@media(max-width:1100px){.overview{grid-template-columns:repeat(3,minmax(0,1fr))}.overview-lead{grid-column:1/-1;min-height:112px}.stat{min-height:120px}.sidebar{width:225px}.app{grid-template-columns:225px minmax(0,1fr)}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:770px){.app{display:block}.sidebar{position:relative;width:auto;height:auto;padding:14px 16px}.logo{padding:0}.logo-symbol{height:39px;width:39px}.sidebar-label,.side-bottom,.source-wrap{display:none}.nav{display:flex;gap:5px;overflow:auto;padding:11px 0 0;margin:0}.nav-button{width:auto;flex:0 0 auto;padding:7px 10px;gap:5px;font-size:11px}.nav-icon{width:18px}.nav-number{display:none}.content{padding:20px 16px 40px}.topbar{margin-bottom:17px}.overview{margin:19px 0}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:530px){h1{font-size:33px}.topbar{align-items:flex-start}.breadcrumb{font-size:11px}.top-actions .small-button{font-size:11px;padding:7px 9px}.overview{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-lead{grid-column:1/-1}.stat{min-height:112px}.stat .stat-value{font-size:33px}.cards{grid-template-columns:1fr}.search{width:100%;max-width:none}.filter-side{overflow-x:auto;flex-wrap:nowrap;width:100%}.chip{white-space:nowrap}.toolbar{gap:10px}.group{margin-top:25px}.group-header h2{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" aria-label="Teaching library navigation">
+<div class="logo"><span class="logo-symbol">✳</span><div><small>Teaching workspace</small><strong>Activity Library</strong></div></div>
+<div class="sidebar-label">Library</div>
+<nav class="nav" id="nav" aria-label="Browse activities">
+<button class="nav-button selected" type="button" data-view="all"><span class="nav-icon">▦</span>All activities<span class="nav-number" id="count-all">—</span></button>
+<button class="nav-button" type="button" data-view="NET"><span class="nav-icon">⌘</span>Network Infrastructure<span class="nav-number" id="count-NET">—</span></button>
+<button class="nav-button" type="button" data-view="IIS"><span class="nav-icon">◇</span>Information Security<span class="nav-number" id="count-IIS">—</span></button>
+<button class="nav-button" type="button" data-view="favorites"><span class="nav-icon">★</span>Favourites<span class="nav-number" id="count-favorites">—</span></button>
+<button class="nav-button" type="button" data-view="archive"><span class="nav-icon">◷</span>Archived NET<span class="nav-number" id="count-archive">—</span></button>
+</nav>
+<div class="sidebar-label source-wrap">Connected repositories</div>
+<div class="source-wrap">
+<a class="source" href="https://github.com/zeebasit/net-interactive-activities" target="_blank" rel="noopener noreferrer"><span class="source-glyph">⌘</span><span><strong>Network Infrastructure</strong><small>net-interactive-activities</small></span></a>
+<a class="source" href="https://github.com/zeebasit/IIS-activities" target="_blank" rel="noopener noreferrer"><span class="source-glyph">◇</span><span><strong>Information Security</strong><small>IIS-activities</small></span></a>
+</div>
+<div class="side-bottom"><strong>Lecturer's workspace</strong>Created by Zeeshan Basit. Activity content remains in its original repository.</div>
+</aside>
+<main class="content">
+<header class="topbar"><div class="breadcrumb">MY WORKSPACE <span class="slash">/</span> <strong>ACTIVITY LIBRARY</strong></div>
+<div class="top-actions"><a class="small-button" href="https://github.com/zeebasit" target="_blank" rel="noopener noreferrer">GitHub profile ↗</a><button class="small-button" id="refresh" type="button">↻ Refresh library</button></div></header>
+<section class="heading-line">
+<div><div class="eyebrow">All your teaching resources, in one place</div><h1>My Activity Library<span style="color:var(--primary)">.</span></h1><p class="subtitle">One organised home for your Network Infrastructure and Information Security activities. Browse by module, launch an activity, or find the source file—without switching between repositories.</p></div>
+<div class="status" id="sync" role="status"><span class="status-dot"></span><span id="syncText">Loading library…</span></div>
+</section>
+<section class="overview" aria-label="Activity overview">
+<div class="overview-lead"><span>Lecturer dashboard</span><strong>Everything ready for your next lesson.</strong><p>Automatically checks both public GitHub repositories for newly added activity pages.</p></div>
+<div class="stat"><span class="stat-label">All activities</span><strong class="stat-value" id="stat-total">—</strong><span class="stat-foot">Across both courses</span></div>
+<div class="stat"><span class="stat-label">NET activities</span><strong class="stat-value" id="stat-net">—</strong><span class="stat-foot">Including archived</span></div>
+<div class="stat"><span class="stat-label">IIS activities</span><strong class="stat-value" id="stat-iis">—</strong><span class="stat-foot">Cases and simulations</span></div>
+</section>
+<section class="toolbar" aria-label="Library search and filters">
+<label class="search" for="search"><span aria-hidden="true" style="font-size:19px">⌕</span><input id="search" type="search" placeholder="Search activities, modules or topics…" autocomplete="off"><span class="sr-only">Search your library</span></label>
+<div class="filter-side" id="types" role="group" aria-label="Activity type">
+<button class="chip" type="button" data-type="all" aria-pressed="true">All types</button>
+<button class="chip" type="button" data-type="Simulation" aria-pressed="false">Simulations</button>
+<button class="chip" type="button" data-type="Practice" aria-pressed="false">Practice & quizzes</button>
+<button class="chip" type="button" data-type="Investigation" aria-pressed="false">Investigations</button>
+<button class="chip" type="button" data-type="Visual" aria-pressed="false">Visual learning</button>
+</div>
+</section>
+<div class="result-line"><span id="resultText">Loading activities…</span><span id="lastSynced">Stored catalogue ready</span></div>
+<section id="groups" aria-live="polite"></section>
+<section id="empty" class="empty" hidden><strong>No matching activities</strong><p>Try changing the search term, course or activity type.</p></section>
+<section class="recents" id="recentSection"><h2>Recently opened</h2><div class="recent-items" id="recentItems"></div></section>
+<div class="fallback" id="fallback">GitHub couldn't refresh the catalogue right now; you're viewing the saved activity list. Try Refresh library later.</div>
+<footer class="footer"><span>Created by Zeeshan Basit · Noroff Blush-inspired design</span><span>Favourites and recent activity are stored in this browser · No sign-in required</span></footer>
+</main>
+</div>
+<script>
+"use strict";
+const SOURCES=[
+ {id:"NET",repo:"zeebasit/net-interactive-activities",base:"https://zeebasit.github.io/net-interactive-activities/"},
+ {id:"IIS",repo:"zeebasit/IIS-activities",base:"https://zeebasit.github.io/IIS-activities/"}
+];
+const META={
+"NET:module1/lesson2/activity1":{title:"Network Connections",description:"Select, build and troubleshoot wired, fibre and wireless connections.",type:"Practice",tags:["Media","Connectivity"]},
+"NET:module1/lesson2/activity2":{title:"Understanding Network Layers",description:"Build the OSI and TCP/IP models and match protocol responsibilities.",type:"Practice",tags:["OSI","TCP/IP"]},
+"NET:module1/lesson2/animation1":{title:"Layered Network Communication",description:"An animated visual guide to how protocols work across networking layers.",type:"Visual",tags:["Layers","Animation"]},
+"NET:module1/lesson3/activity1":{title:"Encapsulation Challenge",description:"Build, repair, predict and analyse packet encapsulation through the stack.",type:"Practice",tags:["Encapsulation","Frames"]},
+"NET:module1/lesson3/activity2":{title:"Network Communication Investigation",description:"Reason through communication scenarios and verify your analysis.",type:"Investigation",tags:["Analysis","Troubleshooting"]},
+"NET:module1/lesson3/complete-sender-receiver-communication":{title:"End-to-End Communication",description:"See the complete sender-to-receiver communication process.",type:"Visual",tags:["End-to-end","Frames"]},
+"NET:module1/lesson3/data-link-layer-encapsulation":{title:"Data-Link Encapsulation",description:"Explore the data-link layer and the Ethernet frame.",type:"Visual",tags:["Data Link","Frames"]},
+"NET:module1/lesson3/network-layer-encapsulation":{title:"Network-Layer Encapsulation",description:"Visualise IP packet handling and network-layer headers.",type:"Visual",tags:["IP","Packets"]},
+"NET:module1/lesson3/physical-layer-transmission":{title:"Physical-Layer Transmission",description:"Follow how digital information moves across the physical medium.",type:"Visual",tags:["Bits","Signals"]},
+"NET:module1/lesson3/transport-encapsulation":{title:"Transport-Layer Encapsulation",description:"Explore segments, transport headers and protocol-layer data.",type:"Visual",tags:["TCP","Transport"]},
+"NET:module1/lesson4/activity1":{title:"IOS Configuration Challenge",description:"Configure, save, verify and troubleshoot a switch in an IOS-like CLI.",type:"Practice",tags:["Cisco IOS","CLI"]},
+"NET:activities/old-content/module-1/cisco-ios-fundamentals-lab":{title:"Cisco IOS Fundamentals",description:"Explore CLI modes, common commands and basic device configuration.",type:"Practice",tags:["Cisco IOS","CLI"]},
+"NET:activities/old-content/module-3/switch-vlan-frame-journey":{title:"Switching, VLANs & Frame Journey",description:"Follow frames and 802.1Q tagging across switches and VLANs.",type:"Simulation",tags:["Switching","VLANs"]},
+"NET:activities/old-content/module-4/binary-hex-builder":{title:"Binary & Hex Builder",description:"Build binary and hexadecimal values from the ground up.",type:"Practice",tags:["Binary","Hexadecimal"]},
+"NET:activities/old-content/module-4/binary-hex-conversion-tutor":{title:"Binary & Hex Conversion Tutor",description:"Step through number-system conversion examples.",type:"Visual",tags:["Binary","Hex"]},
+"NET:activities/old-content/module-4/ipv4-and-machine":{title:"IPv4 AND Machine",description:"Visualise how a subnet mask reveals the network address.",type:"Simulation",tags:["IPv4","Subnet Mask"]},
+"NET:activities/old-content/module-4/same-network-or-different-network":{title:"Same Network or Different Network?",description:"Determine whether two hosts belong to the same IP network.",type:"Practice",tags:["Subnetting","IPv4"]},
+"NET:activities/old-content/module-4/subnetting-practice":{title:"Subnetting Practice",description:"Work through subnet calculations and check the results.",type:"Practice",tags:["IPv4","Subnetting"]},
+"NET:activities/old-content/module-4/subnetting-requirement-builder":{title:"Subnetting Requirement Builder",description:"Construct subnets from host requirements.",type:"Practice",tags:["Subnetting","Hosts"]},
+"NET:activities/old-content/module-4/subnetting-simulator":{title:"Subnetting Simulator",description:"See network, host and broadcast ranges form step by step.",type:"Simulation",tags:["Subnetting","IPv4"]},
+"NET:activities/old-content/module-4/vlsm-practice":{title:"VLSM Practice",description:"Allocate address ranges according to different host requirements.",type:"Practice",tags:["VLSM","IP Planning"]},
+"NET:activities/old-content/module-4/vlsm-requirement-builder":{title:"VLSM Requirement Builder",description:"Build variable-size subnets for a practical addressing plan.",type:"Practice",tags:["VLSM","Planning"]},
+"NET:activities/old-content/module-5/dns-resolution-simulator":{title:"DNS Resolution Simulator",description:"Follow a DNS request from the client through name resolution.",type:"Simulation",tags:["DNS","Resolution"]},
+"NET:activities/old-content/module-5/nat-translation-lab":{title:"NAT Translation Lab",description:"Inspect how static, dynamic and PAT address translation work.",type:"Simulation",tags:["NAT","PAT"]},
+"NET:activities/old-content/module-5/static-routing-decision-lab":{title:"Static Routing Decision Lab",description:"Practise static, default and floating routing decisions.",type:"Practice",tags:["Routing","Static"]},
+"NET:activities/old-content/module-5/static-vs-dynamic-routing-lab":{title:"Static vs Dynamic Routing",description:"Compare routing behaviour when network paths change.",type:"Simulation",tags:["Routing","Failures"]},
+"NET:activities/old-content/module-5/tcp-session-simulator":{title:"TCP Session Simulator",description:"Follow TCP connection setup and termination exchanges.",type:"Simulation",tags:["TCP","Handshake"]},
+"NET:activities/old-content/module-6/ospf-process-explorer":{title:"OSPF Process Explorer",description:"Explore dynamic routing decisions and OSPF operation.",type:"Simulation",tags:["OSPF","Routing"]},
+"IIS:investigations/nordic-retail":{title:"Nordic Retail Security Investigation",description:"Evidence-based security case with staged investigation and reporting.",type:"Investigation",tags:["Case study","Weeks 1–2"]},
+"IIS:module2/security-evidence-quiz":{title:"Security Evidence Quiz",description:"16 evidence-based questions per attempt from a 48-question bank.",type:"Practice",tags:["Module 2","Quiz"]},
+"IIS:module2/tls-secure-website":{title:"How a Secure Website Works (TLS)",description:"Explore the TLS handshake, digital certificates and encrypted HTTPS traffic.",type:"Simulation",tags:["TLS 1.3","HTTPS"]},
+"IIS:concept-demos/asymmetric-encryption-process":{title:"Asymmetric Encryption Process",description:"Follow a secure message using public and private keys.",type:"Simulation",tags:["Cryptography","Public key"]}
+};
+const SNAPSHOT={
+ NET:[
+"module1/lesson2/activity1","module1/lesson2/activity2","module1/lesson2/animation1",
+"module1/lesson3/activity1","module1/lesson3/activity2","module1/lesson3/complete-sender-receiver-communication",
+"module1/lesson3/data-link-layer-encapsulation","module1/lesson3/network-layer-encapsulation",
+"module1/lesson3/physical-layer-transmission","module1/lesson3/transport-encapsulation",
+"module1/lesson4/activity1",
+"activities/old-content/module-1/cisco-ios-fundamentals-lab",
+"activities/old-content/module-3/switch-vlan-frame-journey",
+"activities/old-content/module-4/binary-hex-builder","activities/old-content/module-4/binary-hex-conversion-tutor",
+"activities/old-content/module-4/ipv4-and-machine","activities/old-content/module-4/same-network-or-different-network",
+"activities/old-content/module-4/subnetting-practice","activities/old-content/module-4/subnetting-requirement-builder",
+"activities/old-content/module-4/subnetting-simulator","activities/old-content/module-4/vlsm-practice",
+"activities/old-content/module-4/vlsm-requirement-builder","activities/old-content/module-5/dns-resolution-simulator",
+"activities/old-content/module-5/nat-translation-lab","activities/old-content/module-5/static-routing-decision-lab",
+"activities/old-content/module-5/static-vs-dynamic-routing-lab","activities/old-content/module-5/tcp-session-simulator",
+"activities/old-content/module-6/ospf-process-explorer"],
+ IIS:["concept-demos/asymmetric-encryption-process","investigations/nordic-retail",
+ "module2/security-evidence-quiz","module2/tls-secure-website"]
+};
+const labels={all:"All activities",NET:"Network Infrastructure",IIS:"Information Security",favorites:"Favourites",archive:"Archived NET"};
+const glyphs={Simulation:"◉",Practice:"⌘",Investigation:"◇",Visual:"▣"};
+const SECTIONS={
+ "IIS:Module 2":{name:"Module 2 · Security & Encryption",sub:"Interactive quizzes, secure communication and cryptography",icon:"🔐",rank:1},
+ "IIS:Case Studies":{name:"Security Investigations",sub:"Long-form evidence analysis and independent case work",icon:"🔎",rank:2},
+ "IIS:Concept Demos":{name:"Cryptography Demonstrations",sub:"Foundational information-security visualisations",icon:"🔑",rank:3},
+ "NET:Module 1":{name:"Module 1 · Network Foundations",sub:"Network media, layered communication, encapsulation and IOS",icon:"🌐",rank:4}
+};
+const state={view:"all",type:"all",query:"",items:[],favorite:new Set(),recent:[],fetched:0};
+const $=id=>document.getElementById(id);
+const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const titleCase=s=>s.split("-").map(x=>x[0]?x[0].toUpperCase()+x.slice(1):"").join(" ");
+function loadLocal(){
+ try{state.favorite=new Set(JSON.parse(localStorage.getItem("teacher-hub-stars-v1")||"[]"))}catch(e){}
+ try{state.recent=JSON.parse(localStorage.getItem("teacher-hub-recent-v1")||"[]")}catch(e){}
+}
+function saveLocal(){
+ try{localStorage.setItem("teacher-hub-stars-v1",JSON.stringify([...state.favorite]));localStorage.setItem("teacher-hub-recent-v1",JSON.stringify(state.recent))}catch(e){}
+}
+function infoFor(source,path){
+ const parts=path.split("/"),archive=source==="NET"&&path.startsWith("activities/old-content/");
+ const meta=META[source+":"+path]||{};
+ let moduleMatch=path.match(/module[-]?(\d+)/i),lessonMatch=path.match(/lesson[-]?(\d+)/i);
+ let section;
+ if(source==="IIS"){
+   if(path.startsWith("investigations/"))section="Case Studies";
+   else if(path.startsWith("concept-demos/"))section="Concept Demos";
+   else section=moduleMatch?"Module "+moduleMatch[1]:"Other IIS";
+ }else section=moduleMatch?"Module "+moduleMatch[1]:"Other NET";
+ const last=parts[parts.length-1];
+ let title=meta.title||titleCase(last);
+ if(!meta.title&&/^activity\d+$/i.test(last))title=(lessonMatch?"Lesson "+lessonMatch[1]+" · ":"")+titleCase(last.replace(/(\d+)/,"-$1"));
+ const description=meta.description||(source==="NET"?"Interactive network learning activity.":"Interactive information security activity.");
+ const type=meta.type||(/simulat|animation|journey|explorer/i.test(last)?"Simulation":/quiz|practice|challenge/i.test(last)?"Practice":/investigat|case/i.test(last)?"Investigation":"Visual");
+ const tags=meta.tags||[section,archive?"Earlier content":"Interactive"];
+ const src=SOURCES.find(s=>s.id===source);
+ return {id:source+":"+path,repo:source,path,title,description,type,tags,section,archive,launch:src.base+path+"/",source:"https://github.com/"+src.repo+"/blob/main/"+path+"/index.html"};
+}
+function makeItems(snapshot){return Object.entries(snapshot).flatMap(([source,paths])=>paths.map(path=>infoFor(source,path)))}
+function sectionKey(item){return item.repo+":"+item.section+(item.archive?":Archive":"")}
+function sectionDetails(key){
+ if(SECTIONS[key])return SECTIONS[key];
+ const [repo,module,archive]=key.split(":");
+ const n=Number(module.match(/\d+/)?.[0]||99);
+ return {name:(archive?"Archived · ":"")+module+(repo==="NET"?" · Networking":""),sub:archive?"Earlier interactive learning activities":"Additional "+(repo==="NET"?"network":"information-security")+" activities",icon:repo==="NET"?"🌐":"🛡️",rank:archive?30+n:(repo==="IIS"?6+n:10+n)}
+}
+function updateStats(){
+ const all=state.items, net=all.filter(x=>x.repo==="NET"),iis=all.filter(x=>x.repo==="IIS");
+ $("stat-total").textContent=all.length;$("stat-net").textContent=net.length;$("stat-iis").textContent=iis.length;
+ for(const k of Object.keys(labels)){
+ const count=k==="all"?all.length:k==="favorites"?all.filter(x=>state.favorite.has(x.id)).length:k==="archive"?all.filter(x=>x.archive).length:all.filter(x=>x.repo===k).length;
+ $("count-"+k).textContent=count;
+ }
+}
+function filtered(){
+ const q=state.query.trim().toLowerCase();
+ return state.items.filter(item=>{
+ if(state.view==="NET"&&item.repo!=="NET")return false;
+ if(state.view==="IIS"&&item.repo!=="IIS")return false;
+ if(state.view==="favorites"&&!state.favorite.has(item.id))return false;
+ if(state.view==="archive"&&!item.archive)return false;
+ if(state.type!=="all"&&item.type!==state.type)return false;
+ if(q&&!([item.title,item.description,item.repo,item.section,item.path,...item.tags].join(" ").toLowerCase().includes(q)))return false;
+ return true;
+ })
+}
+function renderRecents(){
+ const rec=state.recent.map(id=>state.items.find(x=>x.id===id)).filter(Boolean).slice(0,5);
+ $("recentSection").classList.toggle("show",rec.length>0&&state.view==="all"&&!state.query&&state.type==="all");
+ $("recentItems").innerHTML=rec.map(item=>'<a class="recent" href="'+escapeHtml(item.launch)+'" target="_blank" rel="noopener noreferrer" data-open="'+escapeHtml(item.id)+'">'+escapeHtml(item.title)+' ↗</a>').join("");
+ $("recentItems").querySelectorAll("[data-open]").forEach(el=>el.addEventListener("click",()=>remember(el.dataset.open)));
+}
+function remember(id){state.recent=[id,...state.recent.filter(x=>x!==id)].slice(0,8);saveLocal();renderRecents()}
+function activityCard(item,index){
+ const favorite=state.favorite.has(item.id);
+ return '<article class="activity"><div class="card-top"><span class="type-label'+(item.archive?' archive':'')+'">'+(glyphs[item.type]||"▣")+' '+escapeHtml(item.type)+(item.archive?' · EARLIER':'')+'</span><button type="button" class="favorite" aria-label="'+(favorite?"Remove from":"Add to")+' favourites: '+escapeHtml(item.title)+'" title="Toggle favourite" data-star="'+escapeHtml(item.id)+'" data-active="'+favorite+'">'+(favorite?"★":"☆")+'</button></div><h3>'+escapeHtml(item.title)+'</h3><p>'+escapeHtml(item.description)+'</p><div class="badges">'+item.tags.slice(0,3).map(t=>'<span>'+escapeHtml(t)+'</span>').join("")+'</div><div class="card-actions"><a class="launch" href="'+escapeHtml(item.launch)+'" target="_blank" rel="noopener noreferrer" data-open="'+escapeHtml(item.id)+'">Launch activity ↗</a><a class="code-link" href="'+escapeHtml(item.source)+'" target="_blank" rel="noopener noreferrer">Source</a><span class="card-number">'+escapeHtml(item.repo)+'</span></div></article>'
+}
+function render(){
+ updateStats();
+ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("selected",b.dataset.view===state.view));
+ document.querySelectorAll("[data-type]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.type===state.type)));
+ const list=filtered();
+ $("resultText").innerHTML='<strong>'+list.length+'</strong> '+(list.length===1?"activity":"activities")+" · "+escapeHtml(labels[state.view]);
+ const groups=new Map();
+ list.forEach(item=>{const key=sectionKey(item);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(item)});
+ const ordered=[...groups].sort((a,b)=>sectionDetails(a[0]).rank-sectionDetails(b[0]).rank||a[0].localeCompare(b[0]));
+ $("groups").innerHTML=ordered.map(([key,items])=>{
+ const info=sectionDetails(key);
+ const sorted=items.slice().sort((a,b)=>a.title.localeCompare(b.title));
+ return '<section class="group" aria-label="'+escapeHtml(info.name)+'"><div class="group-heading"><div class="group-icon">'+info.icon+'</div><div class="group-header"><h2>'+escapeHtml(info.name)+'</h2><p>'+escapeHtml(info.sub)+'</p></div><span class="group-count">'+items.length+' activities</span></div><div class="cards">'+sorted.map(activityCard).join("")+'</div></section>';
+ }).join("");
+ $("empty").hidden=list.length>0;
+ $("groups").querySelectorAll("[data-star]").forEach(el=>el.addEventListener("click",()=>{
+  const id=el.dataset.star;if(state.favorite.has(id))state.favorite.delete(id);else state.favorite.add(id);saveLocal();render();
+ }));
+ $("groups").querySelectorAll("[data-open]").forEach(el=>el.addEventListener("click",()=>remember(el.dataset.open)));
+ renderRecents()
+}
+function setStatus(message,kind){
+ $("sync").className="status "+(kind||"");$("syncText").textContent=message;
+}
+function normalizeTree(source,payload){
+ if(!payload||!Array.isArray(payload.tree)||payload.truncated)throw Error("Unexpected tree response");
+ return payload.tree.filter(item=>item.type==="blob"&&item.path.endsWith("/index.html"))
+ .map(item=>item.path.slice(0,-"/index.html".length))
+ .filter(path=>!path.startsWith("lecturer-hub/"))
+ .filter(path=>path&&!path.startsWith(".")&&!path.includes("/."))
+}
+async function refreshLibrary(){
+ $("refresh").disabled=true;setStatus("Checking GitHub repositories…");
+ const endpoints=SOURCES.map(async source=>{
+  const url="https://api.github.com/repos/"+source.repo+"/git/trees/main?recursive=1";
+  const response=await fetch(url,{headers:{Accept:"application/vnd.github+json"},cache:"no-store"});
+  if(!response.ok)throw Error("GitHub returned "+response.status);
+  const data=await response.json();
+  return {id:source.id,paths:normalizeTree(source.id,data)}
+ });
+ const results=await Promise.allSettled(endpoints);
+ let next={...SNAPSHOT},successful=0;
+ results.forEach((r,i)=>{if(r.status==="fulfilled"){next[SOURCES[i].id]=r.value.paths;successful++}});
+ state.items=makeItems(next);state.fetched=successful;render();
+ if(successful===2){
+  setStatus("Automatically synced with GitHub","live");$("lastSynced").textContent="Just updated";$("fallback").classList.remove("show");
+ }else{
+  setStatus(successful===1?"One repository synced":"Using built-in catalogue",successful===1?"warn":"");
+  $("lastSynced").textContent="Some results may be older";
+  $("fallback").classList.add("show");
+ }
+ $("refresh").disabled=false;
+}
+function init(){
+ loadLocal();state.items=makeItems(SNAPSHOT);render();
+ document.querySelectorAll("[data-view]").forEach(btn=>btn.addEventListener("click",()=>{state.view=btn.dataset.view;render()}));
+ document.querySelectorAll("[data-type]").forEach(btn=>btn.addEventListener("click",()=>{state.type=btn.dataset.type;render()}));
+ $("search").addEventListener("input",event=>{state.query=event.target.value;render()});
+ $("refresh").addEventListener("click",refreshLibrary);
+ refreshLibrary()
+}
+init();
+</script>
+</body>
+</html>
