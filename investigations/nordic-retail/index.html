@@ -396,6 +396,10 @@ const CASE = {
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a'); a.href=url;a.download='Nordic-Retail-Investigation-Report.txt';
     document.body.appendChild(a);a.click();a.remove();
+    if (window.ActivityEngagement) {
+      if (countDone()===allQuestions.length) window.ActivityEngagement.complete();
+      else window.ActivityEngagement.milestone('report-export');
+    }
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   function renderReport() {
