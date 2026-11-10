@@ -432,6 +432,70 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
   .dot{min-width:29px;height:29px}
 }
 
+
+/* Evidence-driven workspace: use the lower part of each panel, not just the top. */
+@media (min-width:1151px) and (min-height:800px){
+ .layout{grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr)}
+ .evidence,.decision{padding:24px 29px}
+ .evidence .block-head,.decision .block-head{margin-bottom:17px}
+ .evidence h3{margin:0 0 17px;font-size:28px}
+ .evidence-intro{font-size:20px;line-height:1.52;margin-bottom:23px}
+ .file{display:flex;flex-direction:column;flex:1 1 auto;max-height:calc(100% - 180px);min-height:0}
+ .file-top{flex:0 0 auto;padding:15px 19px}
+ .file-top strong{font-size:19px}
+ .file-content{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:12px 16px}
+ .file table{height:100%;flex:1 1 auto;border-collapse:collapse}
+ .file th,.file td{vertical-align:middle;font-size:19px;line-height:1.4;padding:12px 15px}
+ .file th{font-size:17px}
+ .file .keyval td:first-child{width:37%}
+ .question-text{font-size:23px;line-height:1.48;margin:1px 0 22px}
+ .choices{flex:1 1 auto;min-height:0;max-height:min(52vh,470px);display:grid;grid-template-rows:repeat(4,minmax(0,1fr));gap:16px}
+ .choice{font-size:21px;line-height:1.45;min-height:56px;padding:15px 19px;gap:17px;border-radius:13px}
+ .bubble{min-width:34px;height:34px;font-size:18px}
+ .decision>.buttons{margin-top:18px}
+ .decision:has(.resultbox) .choices,.decision:has(#hintbox:not(.hidden)) .choices{flex:0 1 auto;max-height:none;grid-template-rows:repeat(4,minmax(58px,auto));gap:8px}
+ .decision:has(.resultbox) .choice,.decision:has(#hintbox:not(.hidden)) .choice{padding:9px 15px;font-size:19px;min-height:58px}
+ .decision:has(.resultbox) .question-text{margin-bottom:12px}
+ .decision:has(.resultbox)>.buttons{margin-top:11px}
+ .decision:has(.resultbox) .resultbox{margin-top:12px}
+ .sections{gap:17px}
+ .section{padding:12px 17px}
+ .modal{width:min(900px,100%)}
+ .modal-reason{font-size:15px}
+ .modal-reason strong{font-size:14px}
+ .log-lines{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly;gap:3px;padding:9px 15px;background:#242225;color:#f8e8e1;border-radius:10px;font:18px/1.48 ui-monospace,SFMono-Regular,Consolas,monospace}
+ .log-line{white-space:pre-wrap;overflow-wrap:anywhere;padding:5px 0}
+ .log-line+.log-line{border-top:1px solid rgba(255,255,255,.1)}
+}
+/* Short desktop screens: retain larger text while allowing available height to dictate spacing. */
+@media (min-width:1151px) and (min-height:800px) and (max-height:915px){
+ .evidence,.decision{padding:20px 24px}
+ .evidence .block-head,.decision .block-head{margin-bottom:12px}
+ .evidence h3{font-size:26px;margin-bottom:11px}
+ .evidence-intro{font-size:19px;line-height:1.45;margin-bottom:17px}
+ .file{max-height:calc(100% - 155px)}
+ .file-top{padding:12px 15px}
+ .file-content{padding:9px 12px}
+ .file th,.file td{font-size:18px;padding:9px 12px}
+ .file th{font-size:16px}
+ .question-text{font-size:22px;line-height:1.43;margin-bottom:16px}
+ .choices{gap:12px}
+ .choice{font-size:20px;padding:12px 16px}
+ .decision>.buttons{margin-top:13px}
+ .decision:has(.resultbox) .choices,.decision:has(#hintbox:not(.hidden)) .choices{gap:6px}
+ .decision:has(.resultbox) .choice,.decision:has(#hintbox:not(.hidden)) .choice{font-size:18px;min-height:54px;padding:8px 12px}
+ .decision:has(.resultbox) .resultbox{padding:11px 13px}
+ .decision:has(.resultbox) .resultbox p{font-size:15px}
+ .log-lines{font-size:16px;padding:9px 12px}
+ .log-line{padding:3px 0}
+}
+/* Don't interfere with the dedicated mobile/tablet two-tab layout. */
+@media (max-width:1150px){
+ .log-lines{background:#242225;color:#f8e8e1;border-radius:9px;padding:12px;font:13px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace}
+ .log-line{white-space:pre-wrap;overflow-wrap:anywhere;padding:5px 0}
+ .log-line+.log-line{border-top:1px solid rgba(255,255,255,.12)}
+}
+
 </style></head><body>
 <main class="shell">
 <header class="topline">
@@ -494,7 +558,7 @@ function answered(){return Object.keys(state.answers).length}
 function correctCount(){return questions.filter(function(q){return state.answers[q.id]!==undefined&&good(q)}).length}
 function score(){return String(Number((correctCount()*100/questions.length).toFixed(2)))}
 function evidence(q){
-if(q.format==="log"){return '<pre class="log">'+esc(q.rows.join("\n"))+'</pre>'}
+if(q.format==="log"){return '<div class="log-lines" role="list" aria-label="Chronological event log">'+q.rows.map(function(line){return '<div class="log-line" role="listitem">'+esc(line)+'</div>'}).join("")+'</div>'}
 if(q.format==="record"){return '<table class="keyval"><tbody>'+q.rows.map(function(row){return '<tr><td>'+esc(row[0])+'</td><td>'+esc(row[1])+'</td></tr>'}).join("")+'</tbody></table>'}
 return '<table><thead><tr>'+q.columns.map(function(x){return '<th scope="col">'+esc(x)+'</th>'}).join("")+'</tr></thead><tbody>'+q.rows.map(function(row){return '<tr>'+row.map(function(x){return '<td>'+esc(x)+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table>'
 }
