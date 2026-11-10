@@ -411,8 +411,7 @@ const CASE = {
       const win=window.open('','_blank');
       if (!win) { alert('Pop-up blocked. Download the report and print it from a text editor.');return; }
       const report=reportText();
-      win.document.open();win.document.write('<!doctype html><html><head><title>Nordic Retail Investigation</title><style>body{font:13px/1.6 Arial,sans-serif;margin:32px;color:#17253a}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 Arial,sans-serif}</style></head><body><pre>'+safeText(report)+'</pre><script defer src="https://zeebasit.github.io/IIS-activities/shared/engagement.js" data-engagement-version="1"></script>
-</body></html>');win.document.close();win.focus();win.print();
+      win.document.open();win.document.write('<!doctype html><html><head><title>Nordic Retail Investigation</title><style>body{font:13px/1.6 Arial,sans-serif;margin:32px;color:#17253a}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 Arial,sans-serif}</style></head><body><pre>'+safeText(report)+'</pre></body></html>');win.document.close();win.focus();win.print();
     });
   }
   function render() {
@@ -450,5 +449,6 @@ const CASE = {
 })();
 
 </script>
+<script defer src="https://zeebasit.github.io/IIS-activities/shared/engagement.js" data-engagement-version="1"></script>
 </body>
 </html>
