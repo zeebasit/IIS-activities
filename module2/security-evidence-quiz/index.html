@@ -165,7 +165,7 @@ function ordered(i){return questions.find(function(q){return q.id===state.order[
 function good(q){return state.answers[q.id]===q.correct[0]}
 function answered(){return Object.keys(state.answers).length}
 function correctCount(){return questions.filter(function(q){return state.answers[q.id]!==undefined&&good(q)}).length}
-function score(){return (correctCount()*100/questions.length).toFixed(2).replace(/\.00$/,"").replace(/0$/,"")}
+function score(){return String(Number((correctCount()*100/questions.length).toFixed(2)))}
 function evidence(q){
 if(q.format==="log"){return '<pre class="log">'+esc(q.rows.join("\n"))+'</pre>'}
 if(q.format==="record"){return '<table class="keyval"><tbody>'+q.rows.map(function(row){return '<tr><td>'+esc(row[0])+'</td><td>'+esc(row[1])+'</td></tr>'}).join("")+'</tbody></table>'}
