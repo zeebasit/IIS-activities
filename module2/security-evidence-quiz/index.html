@@ -692,7 +692,7 @@ $("toQuestion").addEventListener("click",function(){setView("question")});
 $("closeOverlay").addEventListener("click",closeExplanation);
 $("detailOverlay").addEventListener("click",function(e){if(e.target===$("detailOverlay"))closeExplanation()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("detailOverlay").hidden)closeExplanation()});
-$("submit").addEventListener("click",function(){var q=ordered(state.index);if(state.answers[q.id]!==undefined||state.chosen===null)return;state.answers[q.id]=state.chosen;state.chosen=null;state.showHint=false;state.summary=false;render()});
+$("submit").addEventListener("click",function(){var q=ordered(state.index);if(state.answers[q.id]!==undefined||state.chosen===null)return;state.answers[q.id]=state.chosen;state.chosen=null;state.showHint=false;state.summary=false;render();if(answered()===ATTEMPT_SIZE&&window.ActivityEngagement)window.ActivityEngagement.complete()});
 $("hintBtn").addEventListener("click",function(){state.showHint=!state.showHint;render()});
 $("prev").addEventListener("click",function(){navigate(state.index-1)});
 $("next").addEventListener("click",function(){navigate(state.index+1)});
