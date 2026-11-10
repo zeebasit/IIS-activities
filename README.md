@@ -8,6 +8,7 @@ Interactive browser-based simulations for the **Information Security (IIS)** cou
 | --- | --- | --- |
 | Case study, Weeks 1–2 | Nordic Retail Security Investigation | [Open investigation](./investigations/nordic-retail/) |
 | Module 2 | How a Secure Website Works — HTTPS & TLS 1.3 | [Launch TLS simulation](./module2/tls-secure-website/) |
+| Module 2 | Security Evidence Quiz — 16 case-based questions | [Launch evidence quiz](./module2/security-evidence-quiz/) |
 | Concept demonstrations | Asymmetric Encryption — Secure Message Mission | [Launch encryption simulation](./concept-demos/asymmetric-encryption-process/) |
 
 Open **[the activity homepage](./index.html)** to browse the available simulations.
@@ -23,12 +24,16 @@ IIS-activities/
 ├── module2/
 │   └── tls-secure-website/
 │       └── index.html
+│   └── security-evidence-quiz/
+│       └── index.html
 └── concept-demos/
     └── asymmetric-encryption-process/
         └── index.html
 ```
 
 Each simulation is a browser-accessible HTML activity designed for teacher-led demonstrations or self-paced student practice.
+
+The Module 2 Security Evidence Quiz contains 16 case-based multiple-choice questions across Lessons 2.1–2.4. Evidence includes vulnerability reports, certificate and access records, log extracts, and incident summaries. Answers, hints, progress and score stay on the student’s own device; answers are locked after submission, with evidence-based feedback and a shuffle-retry option. Each question is worth 6.25 points (100 total). No central collection or account is required.
 
 The Nordic Retail investigation is an independent 60–90 minute student case study with 12 fictional evidence files, five stages and 15 written questions. Responses save locally in the student's browser; students should export the report (.txt) before changing computers or clearing browser data. This public repository does **not** contain the instructor answer key. The TLS activity is an explanatory model, **not** a real TLS implementation.
 
