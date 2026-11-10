@@ -128,7 +128,7 @@ h1{font-size:21px;line-height:1.1;margin:2px 0 0}
 .section small{font-size:10px}
 #quizView{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
 .layout{flex:1;min-height:0;gap:9px;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr)}
-.evidence,.decision{min-height:0;padding:12px;overflow:hidden;display:flex;flex-direction:column}
+.evidence,.decision{min-height:0;padding:12px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;display:flex;flex-direction:column;scrollbar-width:thin}
 .block-head{margin:0 0 6px;gap:6px}
 .block-head h2{font-size:13px}
 .eyebrow2,.counter{font-size:10px}
@@ -383,7 +383,7 @@ function shuffleRestart(){
 if(answered()>0&&!window.confirm("Start a fresh shuffled attempt? This will clear the answers and score stored on this device."))return;
 state.order=KEYS.slice();
 for(var i=state.order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=state.order[i];state.order[i]=state.order[j];state.order[j]=tmp}
-state.index=0;state.answers={};state.chosen=null;state.showHint=false;state.summary=false;render();window.scrollTo({top:0,behavior:"smooth"})
+state.index=0;state.answers={};state.chosen=null;state.showHint=false;state.summary=false;currentView="evidence";render();window.scrollTo({top:0,behavior:"smooth"})
 }
 $("showEvidence").addEventListener("click",function(){setView("evidence")});
 $("showQuestion").addEventListener("click",function(){setView("question")});
