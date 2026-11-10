@@ -1,5 +1,4 @@
 /* IIS + NET teaching activity engagement integration.
- * Collection is off pending institutional privacy approval.
  * Events: automatic pageview (Umami), activity-start, activity-complete.
  * Never send names, answers, scores, keystrokes or manually assigned visitor IDs.
  * Repo: zeebasit/IIS-activities
@@ -8,7 +7,7 @@
  "use strict";
  if(window.ActivityEngagement)return;
  var WEBSITE_ID="3477cf4c-a222-4bee-9deb-e7bd5b7c0a69";
- var ENABLED=false; // Enable only after institutional privacy approval and any required consent controls.
+ var ENABLED=true;
  var HOSTNAME="zeebasit.github.io";
  var canTrack=ENABLED&&window.location.hostname===HOSTNAME;
  var SCRIPT_URL="https://cloud.umami.is/script.js";
