@@ -2,16 +2,16 @@
 
 ## Current status
 
-The Umami Cloud website is configured in the EU region. The shared tracker is enabled for IIS and NET activity pages on `zeebasit.github.io`.
+The shared tracker sends new activity counts from `zeebasit.github.io` to Cloudflare. Sign in to the [private Activity Library](https://activity-engagement.basitzeeshan.workers.dev/lecturer/) to see counters and reports. Earlier figures remain in the signed-in Umami dashboard.
 
 Both repositories are deployed under `zeebasit.github.io`, so one Umami website can track the NET and IIS paths.
 
 ## What gets measured
 
-- **Opened:** anonymous pageview, collected by the hosted Umami script after activation.
+- **Opened:** anonymous pageview, counted when an activity page loads.
 - **Started:** the first meaningful click, change or keyboard activation of an interactive control on an activity page.
 - **Completed:** an explicit `window.ActivityEngagement.complete()` call made when a verifiable finishing condition is reached. Only implemented in activities with a confirmed finish state.
-- **Report export:** in the Nordic Retail case study, exports with missing responses are recorded separately as `activity-report-export`; an export with all 15 responses of at least 20 characters counts as completed.
+- **Nordic Retail completion:** an export counts as a completion when all 15 responses contain at least 20 characters.
 
 Examples of explicit completions:
 - Module 2 Security Evidence Quiz: all 16 questions submitted.
@@ -19,7 +19,7 @@ Examples of explicit completions:
 
 Other activities currently support pageviews and starts; do **not** interpret an absent completion event as abandonment or failure. The completion definition is not yet available for open-ended activities.
 
-No learner names, answers, quiz scores, student IDs or custom unique identifiers are sent. The system does not attempt to identify individual students. Counts may include lecturers, repeat visits, blocked analytics scripts and other non-student visitors.
+The collector receives the course, activity path, and event name. The database stores daily aggregate counts. The system does not attempt to identify individual students. Counts may include lecturers, repeat visits, blocked analytics scripts and other non-student visitors.
 
 ## Institutional privacy requirements
 
@@ -27,11 +27,9 @@ The site operator is responsible for applicable institutional policies and priva
 
 ## Verify collection
 
-1. Open the Nordic Retail investigation or Module 2 Security Evidence Quiz. Interact and complete the activity, then check the pageview and the `activity-start` and `activity-complete` events in Umami.
-2. Filter by URL path for per-activity statistics. Use the `NET` or `IIS` tag to separate courses, or use the `course` and `activity` event properties for grouping.
-3. To pause collection, set `ENABLED=false` in `shared/engagement.js` and let GitHub Pages redeploy.
-
-Hosted Umami's free Hobby plan currently offers one website, so both repositories are deliberately covered under one hostname. This plan's features and limits can change.
+1. Open an activity and interact with it. Check the activity card for a page view and start after the next refresh.
+2. Complete an activity with a defined finish condition to verify the completion counter.
+3. To pause collection, clear `COLLECT_URL` in `shared/engagement.js` and let GitHub Pages redeploy.
 
 ## Existing 33 pages
 
@@ -64,4 +62,4 @@ The main lecturer hub auto-discovers newly created `index.html` activity pages, 
 - Click-based starts ≠ meaningful completion.
 - A report of complete interaction rates requires an explicit finish condition for each activity.
 - Browser content blockers and failed network requests can cause undercounting.
-- The lecturer hub links to the signed-in Umami dashboard. With the free Hobby plan, view pageviews and custom events there and use the `NET` or `IIS` tag to separate the courses.
+- The private Activity Library refreshes once a minute while open. Its reports include date and course filters and a CSV download.
