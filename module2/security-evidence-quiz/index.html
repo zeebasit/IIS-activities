@@ -530,7 +530,7 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
 </div>
 <div id="hintbox" class="hidden"></div>
 <div id="feedback" aria-live="polite"></div>
-<p class="helper" id="moduleFeedbackHint">The optional Module 3 poll is on the final results screen after you submit all 16 answers.</p>
+<p class="helper" id="moduleFeedbackHint">After submitting an answer, open View progress and feedback to vote in the optional Module 3 poll.</p>
 <button id="openFinalFeedback" class="btn primary hidden" type="button">View final results and feedback</button>
 </section>
 </div>
@@ -673,7 +673,7 @@ $("hintBtn").textContent=state.showHint?"Hide hint":"Show hint";$("hintBtn").set
 choiceButtons(q);feedback(q);questionDots();
 $("prev").disabled=state.index===0;$("next").disabled=state.index===ATTEMPT_SIZE-1;
 var completed=answered()===ATTEMPT_SIZE;
-$("review").textContent=completed?"Final results and feedback":"View progress";
+$("review").textContent=completed?"Final results and feedback":answered()>0?"View progress and feedback":"View progress";
 $("moduleFeedbackHint").classList.toggle("hidden",completed);
 $("openFinalFeedback").classList.toggle("hidden",!completed);
 save()
@@ -730,9 +730,9 @@ function renderSummary(){
 var n=answered(),correct=correctCount(),completed=n===ATTEMPT_SIZE;
 var tiles=Object.keys(sections).map(function(k){var set=state.order.map(getQuestion).filter(function(q){return q.section===k}),a=set.filter(function(q){return state.answers[q.id]!==undefined}),ok=a.filter(good).length;return '<div class="summary-tile"><b>'+ok+' / '+a.length+' correct</b><span>Lesson '+esc(k)+' · '+esc(sections[k])+'</span></div>'}).join("");
 var reports=state.order.map(function(id,i){var q=ordered(i),done=state.answers[id]!==undefined;return '<button type="button" class="review" data-rev="'+i+'"><span><b>'+ (i+1)+'. '+esc(q.title)+'</b><br><small>'+esc(q.topic)+'</small></span><span>'+(!done?"Not answered":good(q)?"✓ Correct":"Review")+'</span></button>'}).join("");
-$("summary").innerHTML='<div class="eyebrow">Assessment report</div><h2>'+(completed?"Quiz completed":"Your progress so far")+'</h2><div class="summary-score">'+score()+'<small style="font-size:18px"> / 100 points</small></div><p>'+correct+' correct out of '+n+' answered. '+(completed?"All decisions have been submitted. Review any evidence and feedback using the items below.":"Return to unanswered questions to complete the assessment and receive a full score.")+'</p><div class="summary-grid">'+tiles+'</div>'+(completed?'<form id="moduleFeedback" class="module-feedback"><fieldset><legend>Would you like a quiz like this for Module 3?</legend><p>Your vote is optional and does not affect your score.</p><div class="module-feedback-options"><label><input type="radio" name="choice" value="yes" required> Yes</label><label><input type="radio" name="choice" value="maybe"> Maybe</label><label><input type="radio" name="choice" value="no"> No</label></div><button class="btn" type="submit">Send feedback</button></fieldset><p id="moduleFeedbackStatus" role="status"></p></form>':'')+'<h3>Review questions</h3><div class="review-list">'+reports+'</div><div class="buttons"><button class="btn primary" id="backToQuiz" type="button">Return to questions</button><button class="btn" id="newRun" type="button">Start new shuffled attempt</button></div>';
+$("summary").innerHTML='<div class="eyebrow">Assessment report</div><h2>'+(completed?"Quiz completed":"Your progress so far")+'</h2><div class="summary-score">'+score()+'<small style="font-size:18px"> / 100 points</small></div><p>'+correct+' correct out of '+n+' answered. '+(completed?"All decisions have been submitted. Review any evidence and feedback using the items below.":"Return to unanswered questions to complete the assessment and receive a full score.")+'</p><div class="summary-grid">'+tiles+'</div>'+(n>0?'<form id="moduleFeedback" class="module-feedback"><fieldset><legend>Would you like a quiz like this for Module 3?</legend><p>Your vote is optional and does not affect your score.</p><div class="module-feedback-options"><label><input type="radio" name="choice" value="yes" required> Yes</label><label><input type="radio" name="choice" value="maybe"> Maybe</label><label><input type="radio" name="choice" value="no"> No</label></div><button class="btn" type="submit">Send feedback</button></fieldset><p id="moduleFeedbackStatus" role="status"></p></form>':'')+'<h3>Review questions</h3><div class="review-list">'+reports+'</div><div class="buttons"><button class="btn primary" id="backToQuiz" type="button">Return to questions</button><button class="btn" id="newRun" type="button">Start new shuffled attempt</button></div>';
 $("summary").querySelectorAll("[data-rev]").forEach(function(btn){btn.addEventListener("click",function(){navigate(Number(btn.getAttribute("data-rev")))})});
-if(completed)renderModuleFeedback();
+if(n>0)renderModuleFeedback();
 $("backToQuiz").addEventListener("click",function(){var ix=state.order.findIndex(function(id){return state.answers[id]===undefined});navigate(ix<0?state.index:ix)});
 $("newRun").addEventListener("click",shuffleRestart)
 }
