@@ -496,6 +496,7 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
  .log-line+.log-line{border-top:1px solid rgba(255,255,255,.12)}
 }
 
+.module-feedback{margin:18px 0;padding:12px;border:1px solid currentColor;border-radius:12px}.module-feedback fieldset{border:0;padding:0;margin:0;min-width:0}.module-feedback legend{font-weight:700}.module-feedback-options{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 12px}.module-feedback-options label{display:inline-flex;align-items:center;gap:6px}#moduleFeedbackStatus:empty{display:none}
 </style></head><body>
 <main class="shell">
 <header class="topline">
@@ -673,12 +674,60 @@ $("review").textContent=answered()===ATTEMPT_SIZE?"Final results":"View progress
 save()
 }
 function navigate(ix){if(ix<0||ix>=ATTEMPT_SIZE)return;state.index=ix;state.chosen=null;state.showHint=false;state.summary=false;currentView="evidence";render();window.scrollTo({top:0,behavior:"smooth"})}
+var feedbackKey="iis-module3-feedback-v1";
+var feedbackVote=null;
+try{feedbackVote=JSON.parse(localStorage.getItem(feedbackKey))}catch(e){}
+var feedbackSending=false;
+
+function renderModuleFeedback(){
+ var form=$("moduleFeedback");
+ var status=$("moduleFeedbackStatus");
+ function update(){
+  form.querySelector("fieldset").disabled=feedbackSending||Boolean(feedbackVote&&feedbackVote.sent);
+  form.querySelectorAll("input").forEach(function(input){
+   if(feedbackVote){input.checked=input.value===feedbackVote.choice;input.disabled=true}
+  });
+  if(feedbackVote&&feedbackVote.sent)status.textContent="Thanks for your feedback.";
+  else if(feedbackSending)status.textContent="Sending your vote…";
+  else if(feedbackVote)status.textContent="Your vote has not been confirmed. Select Send feedback to retry.";
+ }
+ update();
+ form.onsubmit=async function(event){
+  event.preventDefault();
+  if(feedbackSending||(feedbackVote&&feedbackVote.sent))return;
+  if(!feedbackVote){
+   var choice=new FormData(form).get("choice");
+   if(!choice)return;
+   feedbackVote={id:crypto.randomUUID(),choice:choice,sent:false};
+   try{localStorage.setItem(feedbackKey,JSON.stringify(feedbackVote))}catch(e){}
+  }
+  feedbackSending=true;
+  update();
+  try{
+   var response=await fetch("https://activity-engagement.basitzeeshan.workers.dev/module-feedback",{
+    method:"POST",credentials:"omit",referrerPolicy:"no-referrer",
+    headers:{"Content-Type":"text/plain;charset=UTF-8"},
+    body:JSON.stringify({id:feedbackVote.id,choice:feedbackVote.choice}),
+    signal:AbortSignal.timeout(12000)
+   });
+   if(!response.ok)throw Error("Feedback submission failed");
+   feedbackVote.sent=true;
+   try{localStorage.setItem(feedbackKey,JSON.stringify(feedbackVote))}catch(e){}
+  }catch(e){}finally{
+   feedbackSending=false;
+   if($("moduleFeedback")!==form&&$("moduleFeedback"))renderModuleFeedback();
+   else update();
+  }
+ };
+}
+
 function renderSummary(){
 var n=answered(),correct=correctCount(),completed=n===ATTEMPT_SIZE;
 var tiles=Object.keys(sections).map(function(k){var set=state.order.map(getQuestion).filter(function(q){return q.section===k}),a=set.filter(function(q){return state.answers[q.id]!==undefined}),ok=a.filter(good).length;return '<div class="summary-tile"><b>'+ok+' / '+a.length+' correct</b><span>Lesson '+esc(k)+' · '+esc(sections[k])+'</span></div>'}).join("");
 var reports=state.order.map(function(id,i){var q=ordered(i),done=state.answers[id]!==undefined;return '<button type="button" class="review" data-rev="'+i+'"><span><b>'+ (i+1)+'. '+esc(q.title)+'</b><br><small>'+esc(q.topic)+'</small></span><span>'+(!done?"Not answered":good(q)?"✓ Correct":"Review")+'</span></button>'}).join("");
-$("summary").innerHTML='<div class="eyebrow">Assessment report</div><h2>'+(completed?"Quiz completed":"Your progress so far")+'</h2><div class="summary-score">'+score()+'<small style="font-size:18px"> / 100 points</small></div><p>'+correct+' correct out of '+n+' answered. '+(completed?"All decisions have been submitted. Review any evidence and feedback using the items below.":"Return to unanswered questions to complete the assessment and receive a full score.")+'</p><div class="summary-grid">'+tiles+'</div><h3>Review questions</h3><div class="review-list">'+reports+'</div><div class="buttons"><button class="btn primary" id="backToQuiz" type="button">Return to questions</button><button class="btn" id="newRun" type="button">Start new shuffled attempt</button></div>';
+$("summary").innerHTML='<div class="eyebrow">Assessment report</div><h2>'+(completed?"Quiz completed":"Your progress so far")+'</h2><div class="summary-score">'+score()+'<small style="font-size:18px"> / 100 points</small></div><p>'+correct+' correct out of '+n+' answered. '+(completed?"All decisions have been submitted. Review any evidence and feedback using the items below.":"Return to unanswered questions to complete the assessment and receive a full score.")+'</p><div class="summary-grid">'+tiles+'</div>'+(completed?'<form id="moduleFeedback" class="module-feedback"><fieldset><legend>Would you like a quiz like this for Module 3?</legend><p>Your vote is optional and does not affect your score.</p><div class="module-feedback-options"><label><input type="radio" name="choice" value="yes" required> Yes</label><label><input type="radio" name="choice" value="maybe"> Maybe</label><label><input type="radio" name="choice" value="no"> No</label></div><button class="btn" type="submit">Send feedback</button></fieldset><p id="moduleFeedbackStatus" role="status"></p></form>':'')+'<h3>Review questions</h3><div class="review-list">'+reports+'</div><div class="buttons"><button class="btn primary" id="backToQuiz" type="button">Return to questions</button><button class="btn" id="newRun" type="button">Start new shuffled attempt</button></div>';
 $("summary").querySelectorAll("[data-rev]").forEach(function(btn){btn.addEventListener("click",function(){navigate(Number(btn.getAttribute("data-rev")))})});
+if(completed)renderModuleFeedback();
 $("backToQuiz").addEventListener("click",function(){var ix=state.order.findIndex(function(id){return state.answers[id]===undefined});navigate(ix<0?state.index:ix)});
 $("newRun").addEventListener("click",shuffleRestart)
 }
