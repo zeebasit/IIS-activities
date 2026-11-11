@@ -530,6 +530,8 @@ footer{flex:0 0 auto;font-size:10px;padding:1px 0 0}
 </div>
 <div id="hintbox" class="hidden"></div>
 <div id="feedback" aria-live="polite"></div>
+<p class="helper" id="moduleFeedbackHint">The optional Module 3 poll is on the final results screen after you submit all 16 answers.</p>
+<button id="openFinalFeedback" class="btn primary hidden" type="button">View final results and feedback</button>
 </section>
 </div>
 <div class="footer-nav"><div class="tools"><button class="btn" id="prev" type="button">← Previous</button><button class="btn" id="next" type="button">Next →</button></div><div id="dots" class="question-dots" aria-label="Question navigation"></div><div class="tools"><button class="btn" id="review" type="button">View results</button><button class="btn" id="restart" type="button">↻ New shuffled attempt</button></div></div>
@@ -670,7 +672,10 @@ $("hintbox").textContent=q.hint;$("hintbox").classList.toggle("hidden",!state.sh
 $("hintBtn").textContent=state.showHint?"Hide hint":"Show hint";$("hintBtn").setAttribute("aria-expanded",String(state.showHint));
 choiceButtons(q);feedback(q);questionDots();
 $("prev").disabled=state.index===0;$("next").disabled=state.index===ATTEMPT_SIZE-1;
-$("review").textContent=answered()===ATTEMPT_SIZE?"Final results":"View progress";
+var completed=answered()===ATTEMPT_SIZE;
+$("review").textContent=completed?"Final results and feedback":"View progress";
+$("moduleFeedbackHint").classList.toggle("hidden",completed);
+$("openFinalFeedback").classList.toggle("hidden",!completed);
 save()
 }
 function navigate(ix){if(ix<0||ix>=ATTEMPT_SIZE)return;state.index=ix;state.chosen=null;state.showHint=false;state.summary=false;currentView="evidence";render();window.scrollTo({top:0,behavior:"smooth"})}
@@ -745,7 +750,9 @@ $("submit").addEventListener("click",function(){var q=ordered(state.index);if(st
 $("hintBtn").addEventListener("click",function(){state.showHint=!state.showHint;render()});
 $("prev").addEventListener("click",function(){navigate(state.index-1)});
 $("next").addEventListener("click",function(){navigate(state.index+1)});
-$("review").addEventListener("click",function(){state.summary=true;render();window.scrollTo({top:0,behavior:"smooth"})});
+function openResults(){state.summary=true;render();window.scrollTo({top:0,behavior:"smooth"})}
+$("review").addEventListener("click",openResults);
+$("openFinalFeedback").addEventListener("click",openResults);
 $("restart").addEventListener("click",shuffleRestart);
 if(!load())startAttempt();render()
 })();
