@@ -1,33 +1,24 @@
-/* IIS + NET teaching activity engagement integration.
- * Events: automatic pageview (Umami), activity-start, activity-complete.
- * Never send names, answers, scores, keystrokes or manually assigned visitor IDs.
- * Repo: zeebasit/IIS-activities
- */
 (function(){
  "use strict";
  if(window.ActivityEngagement)return;
- var WEBSITE_ID="3477cf4c-a222-4bee-9deb-e7bd5b7c0a69";
- var ENABLED=true;
- var HOSTNAME="zeebasit.github.io";
- var canTrack=ENABLED&&window.location.hostname===HOSTNAME;
- var SCRIPT_URL="https://cloud.umami.is/script.js";
+ var COLLECT_URL="https://activity-engagement.basitzeeshan.workers.dev/collect";
+ var canTrack=COLLECT_URL&&window.location.hostname==="zeebasit.github.io"&&
+  navigator.doNotTrack!=="1"&&!navigator.globalPrivacyControl;
  var pathname=window.location.pathname||"";
  var repo=pathname.startsWith("/IIS-activities/")?"IIS":pathname.startsWith("/net-interactive-activities/")?"NET":null;
  if(!repo)return;
  var activity=pathname.replace(/^\/(?:IIS-activities|net-interactive-activities)\//,"").replace(/\/?index\.html$/i,"").replace(/\/+$/,"")||"home";
  var flags={started:false,completed:false};
- var queue=[],loaded=false;
  function track(event){
-  if(!canTrack)return false; // No third-party request until enabled.
-  if(loaded&&window.umami&&typeof window.umami.track==="function"){
-   try{window.umami.track(event,{course:repo,activity:activity});return true}catch(e){return false}
-  }
-  if(queue.length<4)queue.push(event);
-  return false;
- }
- function flush(){
-  loaded=true;
-  while(queue.length&&window.umami&&typeof window.umami.track==="function")track(queue.shift());
+  if(!canTrack||activity==="home"||activity==="lecturer-hub")return;
+  fetch(COLLECT_URL,{
+   method:"POST",
+   body:JSON.stringify({course:repo,activity:activity,name:event}),
+   headers:{"Content-Type":"text/plain;charset=UTF-8"},
+   credentials:"omit",
+   referrerPolicy:"no-referrer",
+   keepalive:true
+  }).catch(function(){});
  }
  function start(){
   if(flags.started)return;
@@ -56,19 +47,8 @@
   start:start,
   complete:complete,
   // Custom milestones for activities with verifiable end states.
-  milestone:function(name){if(typeof name!=="string"||!/^[a-z0-9-]{1,32}$/.test(name))return;start();track("activity-"+name)}
+  milestone:function(name){if(typeof name!=="string"||!/^[a-z0-9-]{1,32}$/.test(name))return;start()}
  });
- if(canTrack){
-  window.activityEngagementBeforeSend=function(type,payload){
-   delete payload.referrer;
-   return payload;
-  };
-  var s=document.createElement("script");s.defer=true;s.src=SCRIPT_URL;
-  s.referrerPolicy="no-referrer";
-  s.dataset.websiteId=WEBSITE_ID;s.dataset.domains=HOSTNAME;s.dataset.tag=repo;
-  s.dataset.beforeSend="activityEngagementBeforeSend";s.dataset.excludeSearch="true";
-  s.dataset.excludeHash="true";s.dataset.doNotTrack="true";
-  s.addEventListener("load",flush);
-  (document.head||document.documentElement).appendChild(s)
- }
+ track("pageview");
 })();
+
